@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Item Data", menuName = "TahaScripts/CreateNewItem")]
-public class ItemController : ScriptableObject
+public class ItemData : ScriptableObject
 {
     [Header("General Info")]
     public _InventoryInfoClass _invInfo;
@@ -15,6 +15,16 @@ public class ItemController : ScriptableObject
     [Header("Fill if is wearable")]
     public bool _canBeWorn;
     public _DefenseInfoClass _defenseInfo;
+
+#if UNITY_EDITOR
+    private void Awake()
+    {
+        if (_canBeWorn&& _canBePlaced)
+        {
+            Debug.LogError(name + " _canBePlaced & _canBeWorn cant be active at the same time");
+        }
+    }
+#endif
 }
 
 [System.Serializable]
@@ -41,7 +51,9 @@ public class _AttackInfoClass
 [System.Serializable]
 public class _DefenseInfoClass
 {
+    public _WearableTypes _wearableType;
     public int _extraDamage;
     public int _extraHp;
     public int _extraArmor;
+    public float _attackSpeed;
 }

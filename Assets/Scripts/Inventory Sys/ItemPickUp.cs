@@ -1,18 +1,21 @@
 using UnityEngine;
 
-[RequireComponent (typeof(ItemController))]
 public class ItemPickup : MonoBehaviour
 {
-    private ItemController _item;
-    private void Awake()
+    [SerializeField] ItemData _item;
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        _item = GetComponent<ItemController>();
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag(A.Tags.player))
+        if (collision.CompareTag(A.Tags.player))
         {
-            InventoryManager.Instance_PlayerInventory._AddItem(_item);
+            if (InventoryManager.Instance_Player._AddItem(_item))
+            {
+                gameObject.SetActive(false);
+            }
+            else
+            {
+                // do nothing as the inventory is out of space
+            }
         }
     }
 }

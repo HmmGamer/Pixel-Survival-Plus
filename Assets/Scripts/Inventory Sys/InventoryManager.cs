@@ -1,24 +1,29 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class InventoryManager : MonoBehaviour
 {
-    // this is so we can detect the player's inventory easily
-    public static InventoryManager Instance_PlayerInventory;
+    public static InventoryManager Instance_Player;
+    public static event UnityAction _onInventoryChange;
 
-    public int _maxSlots;
-    public List<InventorySlotDataClass> _inventoryDataSlots = new List<InventorySlotDataClass>();
+    public int _maxSlots; // automate it later
+
+    [HideInInspector] public List<InventorySlotDataClass> _inventoryDataSlots = 
+        new List<InventorySlotDataClass>();
+
+    private int _selectedSlotIndex = -1;
 
     private void Awake()
     {
-        if (Instance_PlayerInventory == null)
-            Instance_PlayerInventory = this;
+        if (Instance_Player == null)
+            Instance_Player = this;
         else
         {
-            // we do nothing here so we can have multiple inventories later Like chests
+            // we do nothing so it can extend it and add secondary inventories later
         }
     }
-    public bool _AddItem(ItemController item, int quantity = 1)
+    public bool _AddItem(ItemData item, int quantity = 1)
     {
         if (item._invInfo._maxStack > 1)
         {
@@ -26,6 +31,7 @@ public class InventoryManager : MonoBehaviour
             if (existingSlot != null)
             {
                 existingSlot.Quantity += quantity;
+                _onInventoryChange?.Invoke();
                 return true;
             }
         }
@@ -33,6 +39,7 @@ public class InventoryManager : MonoBehaviour
         if (_HasEmptySpace())
         {
             _inventoryDataSlots.Add(new InventorySlotDataClass(item, quantity));
+            _onInventoryChange?.Invoke();
             return true;
         }
         else
@@ -44,7 +51,47 @@ public class InventoryManager : MonoBehaviour
     {
         return _inventoryDataSlots.Count < _maxSlots;
     }
-    public void _RemoveItem(ItemController item, int quantity = 1)
+    public void _SaveSelectedItem(int slotIndex) // logic is handled in InventoryUi
+    {
+        if (slotIndex >= 0 && slotIndex < _inventoryDataSlots.Count)
+        {
+            _selectedSlotIndex = slotIndex;
+            ItemData item = _inventoryDataSlots[_selectedSlotIndex].Item;
+            InventoryUi.Instance_Player._UpdateSelectedItemInfo(item);
+        }
+        else
+        {
+            _selectedSlotIndex = -1;
+            InventoryUi.Instance_Player._UpdateSelectedItemInfo(null);
+        }
+    }
+    public void _UseSelectedItem()
+    {
+        if (_selectedSlotIndex != -1)
+        {
+            ItemData selectedItem = _inventoryDataSlots[_selectedSlotIndex].Item;
+
+            if (selectedItem._canBeWorn)
+            {
+                _EquipItem(selectedItem);
+            }
+            else if (selectedItem._canBePlaced)
+            {
+                PlaceItem(selectedItem);
+            }
+            else
+            {
+                _UseItem(selectedItem);
+                _inventoryDataSlots[_selectedSlotIndex].Quantity--;
+                if (_inventoryDataSlots[_selectedSlotIndex].Quantity <= 0)
+                {
+                    _inventoryDataSlots.RemoveAt(_selectedSlotIndex);
+                    _selectedSlotIndex = -1;
+                }
+            }
+        }
+    }
+    public void _RemoveItem(ItemData item, int quantity = 1)
     {
         InventorySlotDataClass slot = _inventoryDataSlots.Find(s => s.Item == item);
         if (slot != null)
@@ -52,26 +99,28 @@ public class InventoryManager : MonoBehaviour
             slot.Quantity -= quantity;
             if (slot.Quantity <= 0)
                 _inventoryDataSlots.Remove(slot);
+            _onInventoryChange?.Invoke();
         }
     }
-    public void _MoveItem(int fromIndex, int toIndex)
+    private void _EquipItem(ItemData item)
     {
-        if (fromIndex < 0 || fromIndex >= _inventoryDataSlots.Count || toIndex < 0 || toIndex >= _inventoryDataSlots.Count)
-            return;
-
-        InventorySlotDataClass temp = _inventoryDataSlots[fromIndex];
-        _inventoryDataSlots[fromIndex] = _inventoryDataSlots[toIndex];
-        _inventoryDataSlots[toIndex] = temp;
+        EquipmentManager.instance._ChangeEquipment(item);
+    }
+    private void _UseItem(ItemData item)
+    {
+    }
+    private void PlaceItem(ItemData item)
+    {
     }
 }
 
 [System.Serializable]
 public class InventorySlotDataClass
 {
-    public ItemController Item;
+    public ItemData Item;
     public int Quantity;
 
-    public InventorySlotDataClass(ItemController item, int quantity)
+    public InventorySlotDataClass(ItemData item, int quantity)
     {
         Item = item;
         Quantity = quantity;

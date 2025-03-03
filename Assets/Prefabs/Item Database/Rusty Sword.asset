@@ -10,25 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a326718dc7dacfd45a0ca6551d5dc87f, type: 3}
-  m_Name: CannonData
+  m_Name: Rusty Sword
   m_EditorClassIdentifier: 
   _invInfo:
-    _name: cannon
-    _description: a basic cannon that shots enemys fo you
-    _inventorySprite: {fileID: 21300000, guid: abf2cb50b3315324c8fb0025fdf84fff, type: 3}
-    _buyPrice: 30
-    _sellPrice: 6
-    _maxStack: 5
-  _canBePlaced: 1
+    _name: Rusty Sword
+    _description: it's rusty but it's better than nothing!
+    _inventorySprite: {fileID: 21300000, guid: 3fc03c83e49d74a42bbabcdfaac9a080, type: 3}
+    _buyPrice: 100
+    _sellPrice: 25
+    _maxStack: 1
+  _canBePlaced: 0
   _attackInfo:
     _prefab: {fileID: 0}
-    _damage: 6
-    _hp: 10
+    _damage: 0
+    _hp: 0
     _armor: 0
-    _attackSpeed: 2
-  _canBeWorn: 0
+    _attackSpeed: 0
+  _canBeWorn: 1
   _defenseInfo:
-    _extraDamage: 0
+    _wearableType: 4
+    _extraDamage: 4
     _extraHp: 0
     _extraArmor: 0
-    _attackSpeed: 0
+    _attackSpeed: 1

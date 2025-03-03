@@ -42,7 +42,7 @@ public class ArrowController : MonoBehaviour
 
             if (_hit.collider.CompareTag(A.Tags.player))
             {
-                _hit.collider.GetComponent<PlayerController>()._TakeDamage(_damage, false);
+                //_hit.collider.GetComponent<PlayerController>()._TakeDamage(_damage, false);
             }
 
             Destroy(gameObject);
