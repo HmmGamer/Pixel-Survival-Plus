@@ -7,6 +7,7 @@ public static class A
     {
         public static string player = "Player";
         public static string enemy = "enemy";
+        public static string home = "home";
         public static string arrow = "Arrow";
     }
     public static class LayerMasks

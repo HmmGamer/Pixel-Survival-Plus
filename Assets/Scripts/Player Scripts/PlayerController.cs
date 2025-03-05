@@ -29,9 +29,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float _recoverHpTime;
     [SerializeField] PlayerCanvasController _canvasController;
 
-    private int _totalHp;
-    private int _remainingHp;
-    private int _totalArmor;
+    int _totalHp;
+    [SerializeField, ReadOnly] int _remainingHp;
+    int _totalArmor;
 
     private void Awake()
     {
@@ -42,6 +42,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Start()
     {
+        _UpdateStats();
         _remainingHp = _totalHp;
         //_remainingArrows = _totalArrows;
         _canvasController._SetHpText(_remainingHp);
@@ -59,7 +60,6 @@ public class PlayerController : MonoBehaviour
     private void _UpdateStats()
     {
         _totalHp = EquipmentManager.instance._currentStats._extraHp + _defaultHp;
-        
     }
     private void Update()
     {

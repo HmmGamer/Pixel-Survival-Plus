@@ -8,14 +8,21 @@ public class EnemyDatabase : ScriptableObject
     public _EnemyStatsStruct _stats;
     public _EnemyViewStruct _view;
     public _EnemyDamageStruct _damage;
+    public _EnemyMovementStruct _movement;
 
     #region Types
+    [System.Serializable]
+    public struct _EnemyMovementStruct
+    {
+        public float _speed;
+        public bool _canFly;
+        public bool _canJump;
+    }
     [System.Serializable]
     public struct _EnemyStatsStruct
     {
         public int _hp;
         public int _armor;
-        public float _speed;
     }
     [System.Serializable]
     public struct _EnemyViewStruct

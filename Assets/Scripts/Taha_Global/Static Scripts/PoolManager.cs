@@ -5,7 +5,7 @@ public static class PoolManager
 {
     private static Dictionary<GameObject, Queue<GameObject>> poolDictionary = new Dictionary<GameObject, Queue<GameObject>>();
 
-    public static GameObject _instantiate(GameObject _prefab, Vector3 _position, Quaternion _rotation)
+    public static GameObject _Instantiate(GameObject _prefab, Vector3 _position, Quaternion _rotation)
     {
         if (!poolDictionary.ContainsKey(_prefab))
         {

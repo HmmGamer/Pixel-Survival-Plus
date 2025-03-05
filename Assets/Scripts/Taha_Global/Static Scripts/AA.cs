@@ -334,8 +334,8 @@ public static class AA
         }
     }
     public enum _RandomStruct
-{
-    _0_2, _0_5, _0_10, _0_100
-}
+    {
+        _0_2, _0_5, _0_10, _0_100
+    }
 
 }
