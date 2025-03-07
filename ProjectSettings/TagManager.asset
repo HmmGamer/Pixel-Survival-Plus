@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - home
+  - enemy
+  - tower
+  - bullet
   layers:
   - Default
   - TransparentFX
@@ -14,11 +17,11 @@ TagManager:
   - UI
   - floor
   - player
-  - 
-  - 
-  - 
-  - 
-  - 
+  - loot
+  - enemy
+  - tower
+  - bullet
+  - enemy wall
   - 
   - 
   - 
@@ -39,6 +42,12 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: BG
+    uniqueID: 3437712865
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: ForGround
+    uniqueID: 1213479743
     locked: 0

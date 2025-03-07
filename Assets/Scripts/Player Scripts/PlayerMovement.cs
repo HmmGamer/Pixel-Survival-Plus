@@ -68,6 +68,11 @@ public class PlayerMovement : MonoBehaviour
         _isRunning = Input.GetKey(KeyCode.LeftShift);
         float _currentSpeed = _isRunning ? _runSpeed : _walkSpeed;
 
+        if (_horizontalInput != 0 && Mathf.Sign(_horizontalInput) != Mathf.Sign(transform.localScale.x))
+        {
+            transform.localScale = new Vector2(Mathf.Sign(_horizontalInput), transform.localScale.y);
+        }
+
         //if (_isOnFrontWall && (_horizontalInput > 0 || _horizontalInput < 0))
         //{
         //    _rb.velocity = new Vector2(_horizontalInput * (_currentSpeed * 0.1f)
@@ -78,7 +83,7 @@ public class PlayerMovement : MonoBehaviour
         _rb.velocity = new Vector2(_horizontalInput * _currentSpeed, _rb.velocity.y);
         //}
 
-        _playerAnimator.SetFloat(A.Anim.playerSpeed, Math.Abs(_currentSpeed * _horizontalInput));
+        //_playerAnimator.SetFloat(A.Anim.playerSpeed, Math.Abs(_currentSpeed * _horizontalInput));
     }
     private void _HandleJump()
     {
@@ -111,7 +116,7 @@ public class PlayerMovement : MonoBehaviour
                 StartCoroutine(_JumpWithDelay());
             }
         }
-        _playerAnimator.SetBool(A.Anim.playerIsGrounded, _isGrounded);
+        //_playerAnimator.SetBool(A.Anim.playerIsGrounded, _isGrounded);
         //_playerAnimator.SetBool(A.Anim.playerIsOnWall, _isOnFrontWall);
     }
     private void _Jump()
@@ -122,11 +127,11 @@ public class PlayerMovement : MonoBehaviour
         _rb.velocity = new Vector2(_rb.velocity.x, 0);
         _rb.AddForce(new Vector2(0, _jumpForce * 100));
 
-        _canvasController._SetJumpImage(_jumpsRemaining);
+        //_canvasController._SetJumpImage(_jumpsRemaining);
     }
     private IEnumerator _JumpWithDelay()
     {
-        _playerAnimator.SetTrigger(A.Anim.playerIsJumping);
+        //_playerAnimator.SetTrigger(A.Anim.playerIsJumping);
         _canWalk = false;
         _isNowJumping = true;
         yield return new WaitForSeconds(_jumpDelayTime);

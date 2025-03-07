@@ -99,12 +99,12 @@ public class InventoryUi : MonoBehaviour
     {
         if (iData._canBePlaced)
         {
-            _armorText.text = iData._attackInfo._armor.ToString();
-            _damageText.text = iData._attackInfo._damage.ToString();
-            _hpText.text = iData._attackInfo._hp.ToString();
+            _armorText.text = iData._towerInfo._armor.ToString();
+            _damageText.text = iData._towerInfo._damage.ToString();
+            _hpText.text = iData._towerInfo._hp.ToString();
 
-            if (iData._attackInfo._attackSpeed != 0)
-                _attackSpeedText.text = iData._attackInfo._attackSpeed.ToString();
+            if (iData._towerInfo._attackSpeed != 0)
+                _attackSpeedText.text = iData._towerInfo._attackSpeed.ToString();
             else
                 _attackSpeedText.text = "";
         }

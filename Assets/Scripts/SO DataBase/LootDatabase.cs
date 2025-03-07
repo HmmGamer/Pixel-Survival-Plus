@@ -8,23 +8,24 @@ public class LootDatabase : ScriptableObject
     [SerializeField, Range(0, 100)] int _lootChance;
     public _AllLootsStruct[] _allLoots;
 
-    private int _allChancesCount = 0;
+    private int _totalChances = 0;
 
-    private void Awake()
+    private void OnEnable()
     {
         _CountAllChances();
     }
     public GameObject _GetLoot()
     {
-        if (Random.Range(0, 100) >= _lootChance)
+        if (_lootChance <= 0 || Random.Range(0, 100) >= _lootChance)
         {
             return null;
         }
+
         return _allLoots[_GetNextRandomLootIndex()]._lootPrefab;
     }
     private int _GetNextRandomLootIndex()
     {
-        int randomValue = Random.Range(0, _allChancesCount);
+        int randomValue = Random.Range(0, _totalChances);
         int cumulativeChance = 0;
 
         for (int i = 0; i < _allLoots.Length; i++)
@@ -40,16 +41,26 @@ public class LootDatabase : ScriptableObject
     }
     private void _CountAllChances()
     {
-        foreach (_AllLootsStruct item in _allLoots)
+        _totalChances = 0;
+        foreach (_AllLootsStruct loot in _allLoots)
         {
-            _allChancesCount += item._chance;
+            if (loot._chance < 0 || loot._chance > 100)
+            {
+                Debug.LogError("Loot chance value must be between 0 and 100.");
+                continue;
+            }
+            _totalChances += loot._chance;
+        }
+
+        if (_totalChances <= 0)
+        {
+            Debug.LogWarning("Total chances sum is 0, no loot will drop.");
         }
     }
-
     [System.Serializable]
     public struct _AllLootsStruct
     {
-        public int _chance;
+        [Range(0, 100)] public int _chance;
         public GameObject _lootPrefab;
     }
 }

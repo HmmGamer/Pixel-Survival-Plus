@@ -2,15 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(EnemyController))]
 public class EnemyMovement : MonoBehaviour
 {
     [SerializeField] EnemyDatabase _enemyData;
 
     Vector2 _basicDestinationPos;
     Vector2 _tempDestinationPos;
+    EnemyController _controller;
 
     private void Start()
     {
+        _controller = GetComponent<EnemyController>();
+
         if (HomeController.instance != null)
             _basicDestinationPos = HomeController.instance.transform.position;
         else
@@ -21,6 +25,8 @@ public class EnemyMovement : MonoBehaviour
     }
     private void Update()
     {
+        if (_controller._canMove < 0) return;
+
         _CheckForPlayer();
         _Move();
     }
@@ -47,5 +53,14 @@ public class EnemyMovement : MonoBehaviour
 
         transform.position = Vector2.MoveTowards(transform.position
             , targetPosition, _enemyData._movement._speed * Time.deltaTime);
+
+        Vector2 direction = (targetPosition - (Vector2)transform.position).normalized;
+
+        // Flip the enemy to face the direction of movement
+        if (direction.x != 0 && Mathf.Sign(direction.x) != Mathf.Sign(transform.localScale.x))
+        {
+            transform.localScale = new Vector2(Mathf.Sign(direction.x), transform.localScale.y);
+        }
+
     }
 }

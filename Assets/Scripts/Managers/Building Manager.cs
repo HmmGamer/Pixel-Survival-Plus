@@ -13,8 +13,5 @@ public class BuildingManager : MonoBehaviour
         else
             Destroy(this);
     }
-    private void Update()
-    {
-        
-    }
+
 }

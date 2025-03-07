@@ -31,6 +31,7 @@ public class EquipmentManager : MonoBehaviour
         _AddNewStat(_equipmentButtons._foot._GetStats());
         _AddNewStat(_equipmentButtons._weapon._GetStats());
         _AddNewStat(_equipmentButtons._shield._GetStats());
+        _AddPlayerDefaultStats();
 
         _UpdateStatsUi();
         _onStatsChange?.Invoke();
@@ -72,10 +73,17 @@ public class EquipmentManager : MonoBehaviour
     }
     private void _ResetStats()
     {
+        _currentStats._weaponSprite = null;
         _currentStats._attackSpeed = 0;
         _currentStats._extraDamage = 0;
         _currentStats._extraArmor = 0;
         _currentStats._extraHp = 0;
+    }
+    private void _AddPlayerDefaultStats()
+    {
+        _currentStats._extraArmor += PlayerController.instance._defaultArmor;
+        _currentStats._extraHp += PlayerController.instance._defaultHp;
+        _currentStats._extraDamage += PlayerController.instance._defaultDamage;
     }
     private void _AddNewStat(_DefenseInfoClass iStat)
     {
@@ -84,6 +92,11 @@ public class EquipmentManager : MonoBehaviour
         _currentStats._extraHp += iStat._extraHp;
         _currentStats._extraArmor += iStat._extraArmor;
         _currentStats._extraDamage += iStat._extraDamage;
+
+        if (iStat._weaponSprite != null)
+        {
+            _currentStats._weaponSprite = iStat._weaponSprite;
+        }
     }
     private void _UpdateStatsUi()
     {

@@ -6,12 +6,15 @@ using UnityEngine;
 public class WaveDataBase : ScriptableObject
 {
     public _AllWavesStruct[] _allWaves;
-
+    
     [System.Serializable]
     public struct _AllWavesStruct
     {
-        public float _spawnDelay;
-        public _EachWaveStruct[] _wave;
+        [Tooltip("true => spawn enemy as the array. false=> rotate enemy spawn")]
+        public bool _finishEachWaveFirst;
+
+        public float _spawnDelay; 
+        public _EachWaveStruct[] _waves;
     }
     [System.Serializable]
     public struct _EachWaveStruct

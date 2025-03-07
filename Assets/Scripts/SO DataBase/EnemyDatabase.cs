@@ -9,6 +9,7 @@ public class EnemyDatabase : ScriptableObject
     public _EnemyViewStruct _view;
     public _EnemyDamageStruct _damage;
     public _EnemyMovementStruct _movement;
+    public LootDatabase[] _loots;
 
     #region Types
     [System.Serializable]

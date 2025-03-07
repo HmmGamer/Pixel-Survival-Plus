@@ -23,9 +23,9 @@ public class PlayerController : MonoBehaviour
     public static PlayerController instance;
 
     [Header("General Settings")]
-    [SerializeField] int _defaultHp;
-    [SerializeField] public int _defaultDamage;
-    [SerializeField] int _defaultArmor;
+    public int _defaultHp;
+    public int _defaultDamage;
+    public int _defaultArmor;
     [SerializeField] float _recoverHpTime;
     [SerializeField] PlayerCanvasController _canvasController;
 

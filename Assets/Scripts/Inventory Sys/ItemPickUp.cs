@@ -4,13 +4,13 @@ public class ItemPickup : MonoBehaviour
 {
     [SerializeField] ItemData _item;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.CompareTag(A.Tags.player))
+        if (collision.gameObject.CompareTag(A.Tags.player))
         {
             if (InventoryManager.Instance_Player._AddItem(_item))
             {
-                gameObject.SetActive(false);
+                PoolManager._despawn(gameObject);
             }
             else
             {
@@ -18,4 +18,5 @@ public class ItemPickup : MonoBehaviour
             }
         }
     }
+
 }
