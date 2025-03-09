@@ -14,52 +14,47 @@ public class ConditionalEnumAttribute : PropertyAttribute
     }
 }
 
-[CustomPropertyDrawer(typeof(ConditionalEnumAttribute))]
+[CustomPropertyDrawer(typeof(ConditionalEnumAttribute), true)]
 public class ConditionalEnumDrawer : PropertyDrawer
 {
-    private SerializedObject _serializedObject;
-    private SerializedProperty _enumProperty;
+    private SerializedProperty _cachedEnumProperty;
 
-    public override void OnGUI(Rect _position, SerializedProperty _property, GUIContent _label)
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
-        // Cache the SerializedObject and enum property
-        if (_serializedObject == null || _serializedObject.targetObject != _property.serializedObject.targetObject)
+        ConditionalEnumAttribute attribute = (ConditionalEnumAttribute)this.attribute;
+
+        if (_cachedEnumProperty == null || _cachedEnumProperty.serializedObject != property.serializedObject)
         {
-            _serializedObject = _property.serializedObject;
-            _enumProperty = _serializedObject.FindProperty(((ConditionalEnumAttribute)attribute)._enumField);
+            _cachedEnumProperty = GetEnumProperty(property, attribute._enumField);
         }
 
-        // Validate if the enum property exists and is valid
-        if (_enumProperty == null)
+        if (_cachedEnumProperty == null || !attribute._targetEnumValues.Contains(_cachedEnumProperty.enumValueIndex))
         {
-            Debug.LogWarning($"ConditionalEnum: Could not find enum field '{((ConditionalEnumAttribute)attribute)._enumField}'");
             return;
         }
 
-        if (_enumProperty.propertyType != SerializedPropertyType.Enum)
-        {
-            Debug.LogWarning($"ConditionalEnum: Field '{((ConditionalEnumAttribute)attribute)._enumField}' is not an enum.");
-            return;
-        }
-
-        // Check if the enum value matches the target
-        if (((ConditionalEnumAttribute)attribute)._targetEnumValues.Contains(_enumProperty.enumValueIndex))
-        {
-            // Draw the property field
-            EditorGUI.PropertyField(_position, _property, _label);
-        }
+        EditorGUI.PropertyField(position, property, label, true);
     }
 
-    public override float GetPropertyHeight(SerializedProperty _property, GUIContent _label)
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
-        // Reuse the cached SerializedObject and enum property
-        if (_enumProperty == null || !((ConditionalEnumAttribute)attribute)._targetEnumValues.Contains(_enumProperty.enumValueIndex))
+        ConditionalEnumAttribute attribute = (ConditionalEnumAttribute)this.attribute;
+
+        if (_cachedEnumProperty == null || _cachedEnumProperty.serializedObject != property.serializedObject)
         {
-            // Return zero height to avoid unnecessary space
-            return -EditorGUIUtility.standardVerticalSpacing;
+            _cachedEnumProperty = GetEnumProperty(property, attribute._enumField);
         }
 
-        // Return the height if the property is valid
-        return EditorGUI.GetPropertyHeight(_property);
+        if (_cachedEnumProperty == null || !attribute._targetEnumValues.Contains(_cachedEnumProperty.enumValueIndex))
+        {
+            return 0;
+        }
+
+        return EditorGUI.GetPropertyHeight(property, true);
+    }
+    private SerializedProperty GetEnumProperty(SerializedProperty property, string enumField)
+    {
+        string path = property.propertyPath.Replace(property.name, enumField);
+        return property.serializedObject.FindProperty(path);
     }
 }

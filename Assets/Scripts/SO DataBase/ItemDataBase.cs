@@ -8,14 +8,15 @@ public class ItemData : ScriptableObject
     [Header("General Info")]
     public _InventoryInfoClass _invInfo;
 
-    [Header("Fill if it can be placed")]
-    [ConditionField(nameof(_canBeWorn), true)] public bool _canBePlaced;
-    public _TowerInfoClass _towerInfo;
-    public _BulletInfoClass _bulletInfo;
+    [Header("Only Select One")]
+    public bool _canBeWorn;
+    public bool _canBePlaced;
 
-    [Header("Fill if is wearable")]
-    [ConditionField(nameof(_canBePlaced), true)] public bool _canBeWorn;
-    public _DefenseInfoClass _defenseInfo;
+    //[Header("Fill if it can be placed")]
+    [ConditionField(nameof(_canBePlaced))] public _TowerInfoClass _towerInfo;
+
+    //[Header("Fill if is wearable")]
+    [ConditionField(nameof(_canBeWorn))] public _DefenseInfoClass _defenseInfo;
 
 #if UNITY_EDITOR
     private void Awake()
@@ -49,6 +50,10 @@ public class _TowerInfoClass
     public int _armor;
     public float _attackSpeed;
     public int _attackRange;
+
+    public _AllTowerTypes _towerType;
+    [ConditionalEnum(nameof(_towerType), (int)_AllTowerTypes.bullets)]
+    public _BulletInfoClass _bulletInfo;
 }
 [System.Serializable]
 public class _BulletInfoClass
@@ -66,4 +71,9 @@ public class _DefenseInfoClass
     public int _extraHp;
     public int _extraArmor;
     public float _attackSpeed;
+}
+[System.Serializable]
+public enum _AllTowerTypes
+{
+    bullets, spin
 }

@@ -77,7 +77,7 @@ public class InventoryManager : MonoBehaviour
             }
             else if (selectedItem._canBePlaced)
             {
-                PlaceItem(selectedItem);
+                _PlaceItem(selectedItem);
             }
             else
             {
@@ -109,8 +109,12 @@ public class InventoryManager : MonoBehaviour
     private void _UseItem(ItemData item)
     {
     }
-    private void PlaceItem(ItemData item)
+    private void _PlaceItem(ItemData item)
     {
+        PoolManager._Instantiate(item._towerInfo._towerPrefab
+            , PlayerBuildController.instance._spawnPos.position, Quaternion.identity);
+
+        _RemoveItem(item);
     }
 }
 

@@ -19,14 +19,20 @@ MonoBehaviour:
     _buyPrice: 100
     _sellPrice: 25
     _maxStack: 1
+  _canBeWorn: 1
   _canBePlaced: 0
-  _attackInfo:
-    _prefab: {fileID: 0}
+  _towerInfo:
+    _towerPrefab: {fileID: 0}
     _damage: 0
     _hp: 0
     _armor: 0
     _attackSpeed: 0
-  _canBeWorn: 1
+    _attackRange: 0
+    _towerType: 0
+    _bulletInfo:
+      _bulletPrefab: {fileID: 0}
+      _bulletSpeed: 0
+      _lifeTime: 0
   _defenseInfo:
     _wearableType: 4
     _weaponSprite: {fileID: 21300000, guid: 2dc32f3433e8c1343aa5b19c9f5016e1, type: 3}

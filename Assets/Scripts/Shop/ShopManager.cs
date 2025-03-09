@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerBuildController : MonoBehaviour
+public class ShopManager : MonoBehaviour
 {
-    public static PlayerBuildController instance;
+    public static ShopManager instance;
 
-    public Transform _spawnPos;
+    [HideInInspector] public bool _isInShop;
 
     private void Awake()
     {
@@ -15,4 +15,5 @@ public class PlayerBuildController : MonoBehaviour
         else
             Destroy(gameObject);
     }
+
 }

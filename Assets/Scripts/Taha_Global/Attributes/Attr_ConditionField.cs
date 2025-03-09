@@ -18,40 +18,41 @@ public class ConditionFieldAttribute : PropertyAttribute
 [CustomPropertyDrawer(typeof(ConditionFieldAttribute))]
 public class ConditionFieldDrawer : PropertyDrawer
 {
-    private static readonly Dictionary<string, SerializedProperty> BoolPropertyCache = new Dictionary<string, SerializedProperty>();
+    private static readonly Dictionary<string, string> BoolPropertyPathCache = new Dictionary<string, string>();
     private static readonly Dictionary<string, bool> BoolValueCache = new Dictionary<string, bool>();
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         if (ShouldShow(property))
         {
-            EditorGUI.PropertyField(position, property, label);
+            EditorGUI.PropertyField(position, property, label, true);
         }
     }
 
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
-        return ShouldShow(property) ? EditorGUI.GetPropertyHeight(property) : 0;
+        return ShouldShow(property) ? EditorGUI.GetPropertyHeight(property, true) : 0;
     }
 
     private bool ShouldShow(SerializedProperty property)
     {
         ConditionFieldAttribute attr = (ConditionFieldAttribute)attribute;
-        SerializedObject targetObject = property.serializedObject;
-        string cacheKey = GetCacheKey(targetObject, attr.BoolVariableName);
+        string cacheKey = GetCacheKey(property.serializedObject, attr.BoolVariableName);
 
-        if (!BoolPropertyCache.TryGetValue(cacheKey, out SerializedProperty boolProp))
+        if (!BoolPropertyPathCache.TryGetValue(cacheKey, out string boolPath))
         {
-            boolProp = targetObject.FindProperty(attr.BoolVariableName);
-            BoolPropertyCache[cacheKey] = boolProp;
-        }
-        else if (boolProp.serializedObject != targetObject)
-        {
-            boolProp = targetObject.FindProperty(attr.BoolVariableName);
-            BoolPropertyCache[cacheKey] = boolProp;
+            boolPath = FindBoolPropertyPath(property, attr.BoolVariableName);
+            BoolPropertyPathCache[cacheKey] = boolPath;
         }
 
-        bool currentValue = boolProp?.boolValue ?? false;
+        if (string.IsNullOrEmpty(boolPath))
+            return false;
+
+        SerializedProperty boolProp = property.serializedObject.FindProperty(boolPath);
+        if (boolProp == null)
+            return false;
+
+        bool currentValue = boolProp.boolValue;
         currentValue = attr.Reverse ? !currentValue : currentValue;
 
         if (BoolValueCache.TryGetValue(cacheKey, out bool cachedValue))
@@ -59,7 +60,7 @@ public class ConditionFieldDrawer : PropertyDrawer
             if (currentValue != cachedValue)
             {
                 BoolValueCache[cacheKey] = currentValue;
-                EditorApplication.delayCall += () => RepaintInspector(targetObject.targetObject);
+                EditorApplication.delayCall += () => RepaintInspector(property.serializedObject.targetObject);
             }
         }
         else
@@ -70,11 +71,33 @@ public class ConditionFieldDrawer : PropertyDrawer
         return currentValue;
     }
 
+    private string FindBoolPropertyPath(SerializedProperty property, string boolPath)
+    {
+        SerializedObject targetObject = property.serializedObject;
+        SerializedProperty boolProp = targetObject.FindProperty(boolPath);
+
+        if (boolProp != null)
+            return boolPath;
+
+        if (property.propertyPath.Contains("."))
+        {
+            string parentPath = property.propertyPath.Substring(0, property.propertyPath.LastIndexOf('.'));
+            SerializedProperty parentProperty = targetObject.FindProperty(parentPath);
+            if (parentProperty != null)
+            {
+                boolProp = parentProperty.FindPropertyRelative(boolPath);
+                if (boolProp != null)
+                    return parentPath + "." + boolPath;
+            }
+        }
+
+        return string.Empty;
+    }
+
     private static string GetCacheKey(SerializedObject target, string boolPath)
     {
         return $"{target.targetObject.GetInstanceID()}_{boolPath}";
     }
-
     private static void RepaintInspector(Object target)
     {
         Editor[] editors = ActiveEditorTracker.sharedTracker.activeEditors;
