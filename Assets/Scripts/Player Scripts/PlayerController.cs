@@ -18,6 +18,42 @@ public class PlayerController : MonoBehaviour
     //private int _remainingArrows;
     //private bool _canShoot = true;
     //private bool _hasShield;
+    //
+    //private IEnumerator _ShotCoolDown()
+    //{
+    //    _canShoot = false;
+    //    yield return new WaitForSeconds(_shootingCooldown);
+    //    _canShoot = true;
+    //}
+    //public void _ShootArrow()
+    //{
+    //    if (_remainingArrows <= 0) return;
+
+    //    _remainingArrows--;
+    //    GameObject temp = Instantiate(_ArrowPrefab, _arrowSpawnTransform.position
+    //        , Quaternion.identity);
+
+    //    //bool _isInRightDirection = _frontTransform.position.x > transform.position.x;
+    //    //temp.GetComponent<ArrowController>()._SetSpeedDirection(_isInRightDirection);
+
+    //    _canvasController._SetArrowText(_remainingArrows);
+    //}
+    //private IEnumerator _ShieldCooldown()
+    //{
+    //    _hasShield = true;
+    //    _shield.SetActive(true);
+    //    yield return new WaitForSeconds(SHIELD_DURITION);
+    //    _shield.SetActive(false);
+    //    _hasShield = false;
+    //}
+    //private void Update()
+    //{
+    //    //if (Input.GetKeyDown(KeyCode.E) && _canShoot)
+    //    //{
+    //    //    _ShootArrow();
+    //    //    StartCoroutine(_ShotCoolDown());
+    //    //}
+    //}
     #endregion
 
     public static PlayerController instance;
@@ -61,14 +97,6 @@ public class PlayerController : MonoBehaviour
     {
         _totalHp = EquipmentManager.instance._currentStats._extraHp + _defaultHp;
     }
-    private void Update()
-    {
-        //if (Input.GetKeyDown(KeyCode.E) && _canShoot)
-        //{
-        //    _ShootArrow();
-        //    StartCoroutine(_ShotCoolDown());
-        //}
-    }
     public void _TakeDamage(int iDamage)
     {
         //if (_hasShield) return;
@@ -87,33 +115,6 @@ public class PlayerController : MonoBehaviour
         //    StartCoroutine(_ShieldCooldown());
         //}
     }
-    //private IEnumerator _ShotCoolDown()
-    //{
-    //    _canShoot = false;
-    //    yield return new WaitForSeconds(_shootingCooldown);
-    //    _canShoot = true;
-    //}
-    //public void _ShootArrow()
-    //{
-    //    if (_remainingArrows <= 0) return;
-
-    //    _remainingArrows--;
-    //    GameObject temp = Instantiate(_ArrowPrefab, _arrowSpawnTransform.position
-    //        , Quaternion.identity);
-
-    //    //bool _isInRightDirection = _frontTransform.position.x > transform.position.x;
-    //    //temp.GetComponent<ArrowController>()._SetSpeedDirection(_isInRightDirection);
-
-    //    _canvasController._SetArrowText(_remainingArrows);
-    //}
-    //private IEnumerator _ShieldCooldown()
-    //{
-    //    _hasShield = true;
-    //    _shield.SetActive(true);
-    //    yield return new WaitForSeconds(SHIELD_DURITION);
-    //    _shield.SetActive(false);
-    //    _hasShield = false;
-    //}
     private void _Death()
     {
         gameObject.SetActive(false);

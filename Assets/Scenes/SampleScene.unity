@@ -1634,7 +1634,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a21a26e837d2cb84f9be44077a34af4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxSlots: 4
   _inventoryDataSlots: []
 --- !u!1 &542485320
 GameObject:
@@ -1881,7 +1880,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &583234269
 Transform:
   m_ObjectHideFlags: 0
@@ -3334,7 +3333,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &917774750
 Transform:
   m_ObjectHideFlags: 0
@@ -3893,7 +3892,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1049446455
 Transform:
   m_ObjectHideFlags: 0
@@ -4706,7 +4705,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1395176341
 Transform:
   m_ObjectHideFlags: 0
@@ -6473,7 +6472,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1968057366
 SpriteRenderer:
   m_ObjectHideFlags: 0

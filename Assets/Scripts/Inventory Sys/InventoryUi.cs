@@ -32,10 +32,6 @@ public class InventoryUi : MonoBehaviour
         {
             Instance_Player = this;
         }
-        else
-        {
-            // we do nothing so we can add multiple inventories later
-        }
 
         _slotDefaultSprite = _uiSlots[0].GetComponent<Image>().sprite;
         _slotDefaultFrameColor = _uiSlots[0].GetComponent<Image>().color;

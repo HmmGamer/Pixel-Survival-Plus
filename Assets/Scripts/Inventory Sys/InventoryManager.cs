@@ -7,9 +7,8 @@ public class InventoryManager : MonoBehaviour
     public static InventoryManager Instance_Player;
     public static event UnityAction _onInventoryChange;
 
-    public int _maxSlots; // automate it later
-
-    [HideInInspector] public List<InventorySlotDataClass> _inventoryDataSlots = 
+    [HideInInspector]
+    public List<InventorySlotDataClass> _inventoryDataSlots =
         new List<InventorySlotDataClass>();
 
     private int _selectedSlotIndex = -1;
@@ -49,7 +48,7 @@ public class InventoryManager : MonoBehaviour
     }
     private bool _HasEmptySpace()
     {
-        return _inventoryDataSlots.Count < _maxSlots;
+        return _inventoryDataSlots.Count < InventoryUi.Instance_Player._uiSlots.Length;
     }
     public void _SaveSelectedItem(int slotIndex) // logic is handled in InventoryUi
     {
