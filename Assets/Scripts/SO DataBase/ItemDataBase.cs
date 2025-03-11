@@ -7,26 +7,43 @@ public class ItemData : ScriptableObject
 {
     [Header("General Info")]
     public _InventoryInfoClass _invInfo;
+    public _ItemDataType _type;
 
-    [Header("Only Select One")]
-    public bool _canBeWorn;
-    public bool _canBePlaced;
+    [Header("Advanced Info")]
 
-    //[Header("Fill if it can be placed")]
-    [ConditionField(nameof(_canBePlaced))] public _TowerInfoClass _towerInfo;
+    [ConditionalEnum(nameof(_type), (int)_ItemDataType.building)]
+    public _TowerInfoClass _towerInfo;
 
-    //[Header("Fill if is wearable")]
-    [ConditionField(nameof(_canBeWorn))] public _DefenseInfoClass _defenseInfo;
+    [ConditionalEnum(nameof(_type), (int)_ItemDataType.equipment)]
+    public _DefenseInfoClass _defenseInfo;
 
-#if UNITY_EDITOR
     private void Awake()
     {
-        if (_canBeWorn && _canBePlaced)
+        if (_type != _ItemDataType.equipment)
+            _defenseInfo._wearableType = _AllWearableTypes.none;
+    }
+    public _Stats _GetStats()
+    {
+        if (_type == _ItemDataType.equipment)
         {
-            Debug.LogError(name + " _canBePlaced & _canBeWorn cant be active at the same time");
+            return new _Stats(_defenseInfo._extraDamage, _defenseInfo._extraHp
+                , _defenseInfo._extraArmor, _defenseInfo._attackSpeed);
+        }
+        else if (_type == _ItemDataType.building)
+        {
+            return new _Stats(_towerInfo._damage, _towerInfo._hp
+                , _towerInfo._armor, _towerInfo._attackSpeed);
+        }
+        else
+        {
+            return null;
         }
     }
-#endif
+}
+[System.Serializable]
+public enum _ItemDataType
+{
+    equipment, building, none
 }
 
 [System.Serializable]
@@ -40,7 +57,22 @@ public class _InventoryInfoClass
     public int _sellPrice;
     public int _maxStack = 1;
 }
+[System.Serializable]
+public class _Stats
+{
+    public int _damage;
+    public int _hp;
+    public int _armor;
+    public float _attackSpeed;
 
+    public _Stats(int iDamage, int iHp, int iArmor, float iAttkSpeed)
+    {
+        _damage = iDamage;
+        _hp = iHp;
+        _armor = iArmor;
+        _attackSpeed = iAttkSpeed;
+    }
+}
 [System.Serializable]
 public class _TowerInfoClass
 {
@@ -65,7 +97,7 @@ public class _BulletInfoClass
 [System.Serializable]
 public class _DefenseInfoClass
 {
-    public _WearableTypes _wearableType;
+    public _AllWearableTypes _wearableType;
     public Sprite _weaponSprite;
     public int _extraDamage;
     public int _extraHp;
@@ -76,4 +108,9 @@ public class _DefenseInfoClass
 public enum _AllTowerTypes
 {
     bullets, spin
+}
+[System.Serializable]
+public enum _AllWearableTypes
+{
+    none, head, body, legs, weapon, shield
 }

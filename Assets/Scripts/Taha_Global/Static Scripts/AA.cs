@@ -284,6 +284,20 @@ public static class AA
             }
             Object.DontDestroyOnLoad(iGameObject);
         }
+        public static void _GetComponentInParent<T>(Transform iTransform, ref T iComponent)
+        {
+            iTransform = iTransform.parent;
+            while (iTransform != null)
+            {
+                if (iTransform.TryGetComponent<T>(out T component))
+                {
+                    iComponent = component;
+                    return;
+                }
+                iTransform = iTransform.parent;
+            }
+        }
+
         public static Vector3 _Vector3Maker(Quaternion quaternion)
         {
             return new Vector3(quaternion.x, quaternion.y, quaternion.z);

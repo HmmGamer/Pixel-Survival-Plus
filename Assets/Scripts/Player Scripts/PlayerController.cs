@@ -87,15 +87,15 @@ public class PlayerController : MonoBehaviour
     }
     private void OnEnable()
     {
-        EquipmentManager._onStatsChange += _UpdateStats;
+        //EquipmentManager._onStatsChange += _UpdateStats;
     }
     private void OnDisable()
     {
-        EquipmentManager._onStatsChange -= _UpdateStats;
+        //EquipmentManager._onStatsChange -= _UpdateStats;
     }
     private void _UpdateStats()
     {
-        _totalHp = EquipmentManager.instance._currentStats._extraHp + _defaultHp;
+        //_totalHp = EquipmentManager.instance._currentStats._extraHp + _defaultHp;
     }
     public void _TakeDamage(int iDamage)
     {

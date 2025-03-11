@@ -18,11 +18,11 @@ public class PlayerWeaponController : MonoBehaviour
     }
     private void OnEnable()
     {
-        EquipmentManager._onStatsChange += _ChangeStats;
+        //EquipmentManager._onStatsChange += _ChangeStats;
     }
     private void OnDisable()
     {
-        EquipmentManager._onStatsChange += _ChangeStats;
+        //EquipmentManager._onStatsChange += _ChangeStats;
     }
     private void Update()
     {
@@ -33,12 +33,12 @@ public class PlayerWeaponController : MonoBehaviour
     }
     private void _ChangeStats()
     {
-        GetComponent<SpriteRenderer>().sprite =
-            EquipmentManager.instance._currentStats._weaponSprite;
+        //GetComponent<SpriteRenderer>().sprite =
+        //    EquipmentManager.instance._currentStats._weaponSprite;
 
-        _weaponDamage = EquipmentManager.instance._currentStats._extraDamage;
-        _weaponDamage += PlayerController.instance._defaultDamage;
-        _attackSpeed = EquipmentManager.instance._currentStats._attackSpeed;
+        //_weaponDamage = EquipmentManager.instance._currentStats._extraDamage;
+        //_weaponDamage += PlayerController.instance._defaultDamage;
+        //_attackSpeed = EquipmentManager.instance._currentStats._attackSpeed;
     }
     private void _Attack()
     {

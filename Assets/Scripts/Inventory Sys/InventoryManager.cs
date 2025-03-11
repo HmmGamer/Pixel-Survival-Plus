@@ -1,131 +1,125 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviour
 {
-    public static InventoryManager Instance_Player;
-    public static event UnityAction _onInventoryChange;
+    public static InventoryManager Instance;
 
-    [HideInInspector]
-    public List<InventorySlotDataClass> _inventoryDataSlots =
-        new List<InventorySlotDataClass>();
+    [Header("Ui Attachments")]
+    [SerializeField] InventorySlot[] _invSlots;
+    [SerializeField] _uiAttachments _uiAttach;
 
-    private int _selectedSlotIndex = -1;
+    [Header("Public Data")]
+    public Sprite _defaultSlotSprite;
+    public Color _defaultSlotColor = Color.white;
+    [HideInInspector] public GameObject _dragGameObject;
+    public Canvas _inventoryCanvas;
 
     private void Awake()
     {
-        if (Instance_Player == null)
-            Instance_Player = this;
+        if (Instance == null)
+            Instance = this;
         else
-        {
-            // we do nothing so it can extend it and add secondary inventories later
-        }
+            Destroy(gameObject);
+
+        _dragGameObject = new GameObject("Drag Object");
+        _dragGameObject.transform.parent = _inventoryCanvas.transform;
+        _dragGameObject.AddComponent<Image>();
     }
-    public bool _AddItem(ItemData item, int quantity = 1)
+    #region Visual
+    public void _ShowSlotInfo(ItemData iData)
     {
-        if (item._invInfo._maxStack > 1)
+        if (iData == null)
         {
-            InventorySlotDataClass existingSlot = _inventoryDataSlots.Find(slot => slot.Item == item && slot.Quantity < item._invInfo._maxStack);
-            if (existingSlot != null)
-            {
-                existingSlot.Quantity += quantity;
-                _onInventoryChange?.Invoke();
-                return true;
-            }
+            _ActivateInfoPanel(false);
+            return;
         }
 
-        if (_HasEmptySpace())
-        {
-            _inventoryDataSlots.Add(new InventorySlotDataClass(item, quantity));
-            _onInventoryChange?.Invoke();
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        _ActivateInfoPanel(true);
+        _ShowBasicData(iData);
+        _ShowStatsData(iData);
     }
-    private bool _HasEmptySpace()
+    private void _ShowBasicData(ItemData iData)
     {
-        return _inventoryDataSlots.Count < InventoryUi.Instance_Player._uiSlots.Length;
+        _uiAttach._itemNameText.text = iData._invInfo._name;
+        _uiAttach._itemDescriptionText.text = iData._invInfo._description;
     }
-    public void _SaveSelectedItem(int slotIndex) // logic is handled in InventoryUi
+    private void _ShowStatsData(ItemData iData)
     {
-        if (slotIndex >= 0 && slotIndex < _inventoryDataSlots.Count)
-        {
-            _selectedSlotIndex = slotIndex;
-            ItemData item = _inventoryDataSlots[_selectedSlotIndex].Item;
-            InventoryUi.Instance_Player._UpdateSelectedItemInfo(item);
-        }
-        else
-        {
-            _selectedSlotIndex = -1;
-            InventoryUi.Instance_Player._UpdateSelectedItemInfo(null);
-        }
-    }
-    public void _UseSelectedItem()
-    {
-        if (_selectedSlotIndex != -1)
-        {
-            ItemData selectedItem = _inventoryDataSlots[_selectedSlotIndex].Item;
+        _Stats currentStats = iData._GetStats();
 
-            if (selectedItem._canBeWorn)
+        _uiAttach._hpText.text = currentStats._hp.ToString();
+        _uiAttach._armorText.text = currentStats._armor.ToString();
+        _uiAttach._damageText.text = currentStats._damage.ToString();
+        _uiAttach._attackSpeedText.text = currentStats._attackSpeed.ToString();
+    }
+    private void _ActivateInfoPanel(bool iActivation)
+    {
+        _uiAttach._infoPanel.SetActive(iActivation);
+    }
+    #endregion
+
+    public bool _AddNewItem(ItemData iNewData)
+    {
+        InventorySlot firstEmpty = null;
+        // check if there is any slot with enough space or stack
+        for (int i = 0; i < _invSlots.Length; i++)
+        {
+            if (_invSlots[i]._data == null)
             {
-                _EquipItem(selectedItem);
-            }
-            else if (selectedItem._canBePlaced)
-            {
-                _PlaceItem(selectedItem);
+                if (firstEmpty == null)
+                    firstEmpty = _invSlots[i];
             }
             else
             {
-                _UseItem(selectedItem);
-                _inventoryDataSlots[_selectedSlotIndex].Quantity--;
-                if (_inventoryDataSlots[_selectedSlotIndex].Quantity <= 0)
+                if (_invSlots[i]._data._itemData != iNewData) continue;
+
+                if (_invSlots[i]._data._quantity < _invSlots[i]._data._itemData._invInfo._maxStack)
                 {
-                    _inventoryDataSlots.RemoveAt(_selectedSlotIndex);
-                    _selectedSlotIndex = -1;
+                    _invSlots[i]._data._quantity++;
+                    return true;
                 }
             }
         }
-    }
-    public void _RemoveItem(ItemData item, int quantity = 1)
-    {
-        InventorySlotDataClass slot = _inventoryDataSlots.Find(s => s.Item == item);
-        if (slot != null)
+        // if we are here it means we can't stack anywhere
+        if (firstEmpty != null)
         {
-            slot.Quantity -= quantity;
-            if (slot.Quantity <= 0)
-                _inventoryDataSlots.Remove(slot);
-            _onInventoryChange?.Invoke();
+            firstEmpty._ChangeData(new _InvData(iNewData));
+            return true;
+        }
+        // if we are here it means there is no available slot in the inventory
+        return false;
+    }
+    public void _RemoveItemFromSlot(_InvData iData, InventorySlot iSlot)
+    {
+        if (iSlot._data._itemData != iData._itemData) return;
+
+        if (iSlot._data._quantity > iData._quantity)
+            iSlot._ChangeData(null);
+        else
+        {
+            iData._quantity = iSlot._data._quantity - iData._quantity;
+            iSlot._ChangeData(iData);
         }
     }
-    private void _EquipItem(ItemData item)
-    {
-        EquipmentManager.instance._ChangeEquipment(item);
-    }
-    private void _UseItem(ItemData item)
-    {
-    }
-    private void _PlaceItem(ItemData item)
-    {
-        PoolManager._Instantiate(item._towerInfo._towerPrefab
-            , PlayerBuildController.instance._spawnPos.position, Quaternion.identity);
 
-        _RemoveItem(item);
-    }
-}
-
-[System.Serializable]
-public class InventorySlotDataClass
-{
-    public ItemData Item;
-    public int Quantity;
-
-    public InventorySlotDataClass(ItemData item, int quantity)
+    [System.Serializable]
+    public class _uiAttachments
     {
-        Item = item;
-        Quantity = quantity;
+        [Header("General Attachments")]
+        public GameObject _infoPanel;
+
+        [Header("Stats Text Attachments")]
+        public Text _damageText;
+        public Text _armorText;
+        public Text _hpText;
+        public Text _attackSpeedText;
+
+        [Header("Info Text Attachments")]
+        public Text _itemNameText;
+        public Text _itemDescriptionText;
+        public Button _useButton;
     }
 }
