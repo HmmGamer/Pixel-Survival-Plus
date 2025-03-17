@@ -16,11 +16,11 @@ MonoBehaviour:
     _name: cannon
     _description: a basic cannon that shots enemys fo you
     _inventorySprite: {fileID: 21300000, guid: abf2cb50b3315324c8fb0025fdf84fff, type: 3}
-    _buyPrice: 30
-    _sellPrice: 6
     _maxStack: 1
-  _canBeWorn: 0
-  _canBePlaced: 1
+  _shopInfo:
+    _buyPrice: 30
+    _sellPrice: 10
+  _type: 1
   _towerInfo:
     _towerPrefab: {fileID: 8544809547718646516, guid: d31b9ccc4e1ce70409c162dcf1712a17, type: 3}
     _damage: 0
@@ -29,13 +29,10 @@ MonoBehaviour:
     _attackSpeed: 1
     _attackRange: 10
     _towerType: 1
-    _bulletInfo:
-      _bulletPrefab: {fileID: 6918753477090465622, guid: 54fcfa85ba9deb5439494d02e7224229, type: 3}
-      _bulletSpeed: 7
-      _lifeTime: 3
+    _bulletPrefab: {fileID: 0}
   _defenseInfo:
     _wearableType: 0
-    _weaponSprite: {fileID: 0}
+    _equipmentSprite: {fileID: 0}
     _extraDamage: 0
     _extraHp: 0
     _extraArmor: 0

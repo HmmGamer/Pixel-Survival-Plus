@@ -10,11 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4fd6de7763e10ad4ba68fd36eb5f459f, type: 3}
-  m_Name: Common Loot Data
+  m_Name: Basic Coin Loot
   m_EditorClassIdentifier: 
-  _lootChance: 60
+  _lootChance: 80
   _allLoots:
-  - _chance: 90
+  - _chance: 100
     _lootPrefab: {fileID: 1141532008781612660, guid: c2366680bed147d41abdee69d8ecdb41, type: 3}
-  - _chance: 5
-    _lootPrefab: {fileID: 3233682794106196837, guid: d27d7667e01b20244bbc6e450bc13fca, type: 3}

@@ -7,15 +7,19 @@ public class EnemySpawner : MonoBehaviour
 {
     public static EnemySpawner Instance;
 
+    [Header("General Settings")]
     [SerializeField] WaveDataBase _waveData;
-    [SerializeField] Transform _spawnPos;
     [SerializeField] int _defaultLevel;
+    [SerializeField] bool _autoStart = false;
 
+    [Header("Attachments")]
+    [SerializeField] Transform _spawnPos;
     [SerializeField] Text _remainingEnemiesText;
     [SerializeField] Button _startNextWaveButton;
 
     private int _currentWaveIndex = 0;
     private bool _isSpawning = false;
+    Pool _pool;
 
     #region Starter
     private void Awake()
@@ -24,11 +28,15 @@ public class EnemySpawner : MonoBehaviour
             Instance = this;
         else
             Destroy(gameObject);
+
+        _pool = Pool._GetInstance(_PoolType.enemy);
     }
     private void Start()
     {
         _InitButtons();
         _currentWaveIndex = _defaultLevel;
+        if (_autoStart)
+            _StartNextWave();
     }
     private void _InitButtons()
     {
@@ -42,7 +50,14 @@ public class EnemySpawner : MonoBehaviour
 
         WaveDataBase._AllWavesStruct currentWave = _waveData._allWaves[_currentWaveIndex];
 
-        if (currentWave._finishEachWaveFirst)
+        // Create a local copy of enemy counts
+        int[] enemyCounts = new int[currentWave._waves.Length];
+        for (int i = 0; i < currentWave._waves.Length; i++)
+        {
+            enemyCounts[i] = currentWave._waves[i]._count;
+        }
+
+        if (currentWave._finishEachEnemyFirst)
         {
             for (int i = 0; i < currentWave._waves.Length; i++)
             {
@@ -51,22 +66,29 @@ public class EnemySpawner : MonoBehaviour
         }
         else
         {
-            while (HasRemainingEnemies(currentWave))
+            while (HasRemainingEnemies(enemyCounts))
             {
                 for (int i = 0; i < currentWave._waves.Length; i++)
                 {
-                    if (currentWave._waves[i]._count > 0)
+                    if (enemyCounts[i] > 0)
                     {
                         yield return SpawnEnemy(currentWave._waves[i]._enemyPrefab);
-                        currentWave._waves[i]._count--;
+                        enemyCounts[i]--;
                         yield return new WaitForSeconds(currentWave._spawnDelay);
                     }
                 }
             }
         }
-
         _isSpawning = false;
         _ActivateNextWaveButton(true); // Enable the button when the wave is finished
+    }
+    private bool HasRemainingEnemies(int[] enemyCounts)
+    {
+        foreach (int count in enemyCounts)
+        {
+            if (count > 0) return true;
+        }
+        return false;
     }
     private IEnumerator SpawnEnemies(WaveDataBase._EachWaveStruct wave)
     {
@@ -78,7 +100,7 @@ public class EnemySpawner : MonoBehaviour
     }
     private IEnumerator SpawnEnemy(GameObject enemyPrefab)
     {
-        Instantiate(enemyPrefab, _spawnPos.position, Quaternion.identity);
+        _pool._Instantiate(enemyPrefab, _spawnPos.position,Quaternion.identity);
         yield return null;
     }
     private bool HasRemainingEnemies(WaveDataBase._AllWavesStruct wave)

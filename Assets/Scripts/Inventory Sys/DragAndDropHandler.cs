@@ -32,9 +32,6 @@ public class DragAndDropHandler : MonoBehaviour, IBeginDragHandler, IDragHandler
         draggedImage.sprite = _slot._data._itemData._invInfo._inventorySprite;
         draggedImage.raycastTarget = false;
 
-        //RectTransform draggedRect = _draggedIcon.GetComponent<RectTransform>();
-        //draggedRect.sizeDelta = _rectTransform.sizeDelta;
-
         _canvasGroup.alpha = 0.6f;
         _canvasGroup.blocksRaycasts = false;
     }
@@ -60,14 +57,25 @@ public class DragAndDropHandler : MonoBehaviour, IBeginDragHandler, IDragHandler
         _canvasGroup.blocksRaycasts = true;
 
         GameObject dropTarget = eventData.pointerCurrentRaycast.gameObject;
-        if (dropTarget != null)
+        if (dropTarget == null) return;
+
+        if (dropTarget.GetComponent<DragAndDropHandler>() == null) return;
+
+        InventorySlot targetSlot = dropTarget.GetComponent<InventorySlot>();
+        if (targetSlot != null)
         {
-            InventorySlot targetSlot = dropTarget.GetComponent<InventorySlot>();
-            if (targetSlot != null && targetSlot._data == null)
+            if (targetSlot._data == null)
             {
                 if (targetSlot._ChangeData(_slot._data))
                     _slot._ChangeData(null);
             }
+            else
+            {
+                _InvData tempData = targetSlot._data;
+                if (targetSlot._ChangeData(_slot._data))
+                    _slot._ChangeData(tempData);
+            }
         }
     }
+
 }

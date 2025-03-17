@@ -8,6 +8,7 @@ TagManager:
   - enemy
   - tower
   - bullet
+  - player weapon
   layers:
   - Default
   - TransparentFX

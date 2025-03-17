@@ -127,7 +127,7 @@ public class PlayerMovement : MonoBehaviour
         _rb.velocity = new Vector2(_rb.velocity.x, 0);
         _rb.AddForce(new Vector2(0, _jumpForce * 100));
 
-        //_canvasController._SetJumpImage(_jumpsRemaining);
+        _canvasController._SetJumpImage(_jumpsRemaining);
     }
     private IEnumerator _JumpWithDelay()
     {

@@ -1,20 +1,28 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Button))]
 public class InventorySlot : MonoBehaviour
 {
-    // it's called so no there wont be another item selected as well (for visual bugs)
-    public static event System.Action onNewSelection;
+    // its static and it tells all of the slots that they can't be selected
+    public static event UnityAction _onNewSelection;
+    // this is like the _onNewSelection but its not static
+    public event UnityAction<_InvData> _onChangeSelection;
+    public event UnityAction<_InvData> _onSlotChange;
 
+    //[Header("General Settings")]
+    //[SerializeField] bool _isSelectable = true;
+
+    [Header("Attachments")]
     [SerializeField] Image _iconImage;
     [SerializeField] Text _quantityText;
 
     [HideInInspector] public _AllWearableTypes _slotType = _AllWearableTypes.none;
-    [HideInInspector] public _InvData _data;
+    [HideInInspector] public _InvData _data = null;
     bool _isSelected;
     Image _selectionBorder;
-
+    
     #region starter
     private void Start()
     {
@@ -23,11 +31,11 @@ public class InventorySlot : MonoBehaviour
     }
     private void OnEnable()
     {
-        onNewSelection += _ResetSelection;
+        _onNewSelection += _ResetSelection;
     }
     private void OnDisable()
     {
-        onNewSelection -= _ResetSelection;
+        _onNewSelection -= _ResetSelection;
     }
     private void _InitButtons()
     {
@@ -35,7 +43,7 @@ public class InventorySlot : MonoBehaviour
     }
     #endregion
     #region visual
-    private void _UpdateUi()
+    public void _UpdateUi()
     {
         _UpdateIcon();
         _UpdateQuantityText();
@@ -56,6 +64,8 @@ public class InventorySlot : MonoBehaviour
 
         if (_data == null)
             _quantityText.text = string.Empty;
+        else if (_data._quantity == 1)
+            _quantityText.text = string.Empty;
         else
             _quantityText.text = _data._quantity.ToString();
     }
@@ -68,7 +78,23 @@ public class InventorySlot : MonoBehaviour
 
         _data = iData;
         _UpdateUi();
+        _onSlotChange?.Invoke(iData);
+        _onNewSelection?.Invoke();
         return true;
+    }
+    public void _UseItem(int iCount = 1)
+    {
+        _data._quantity -= iCount;
+
+        if (_data._quantity <= 0)
+        {
+            // we deSelect and remove the item form the inventory
+            _B_ChangeSelection();
+            _ChangeData(null);
+        }
+            
+        else // we decreased it first and now we update the Ui 
+            _UpdateUi();
     }
     public bool _CanSlotStoreItem(ItemData iNewData)
     {
@@ -82,15 +108,18 @@ public class InventorySlot : MonoBehaviour
 
         if (!_isSelected)
         {
-            onNewSelection?.Invoke();
+            _onNewSelection?.Invoke();
+            _onChangeSelection?.Invoke(_data);
             _isSelected = true;
             _selectionBorder.color = Color.yellow;
             InventoryManager.Instance._ShowSlotInfo(_data._itemData);
+            ButtonManager.instance._ChangeActivation(true, this, _data._itemData);
         }
         else
         {
-            _isSelected = false;
+            _onChangeSelection?.Invoke(null);
             InventoryManager.Instance._ShowSlotInfo(null);
+            ButtonManager.instance._ChangeActivation(false);
             _ResetSelection();
         }
     }
@@ -110,4 +139,5 @@ public class _InvData
         _itemData = iData;
         _quantity = iQuantity;
     }
+    public _InvData() { }
 }

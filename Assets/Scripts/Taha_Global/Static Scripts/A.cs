@@ -6,6 +6,7 @@ public static class A
     public static class Tags
     {
         public static string player = "Player";
+        public static string playerWeapon = "player weapon";
         public static string enemy = "enemy";
         public static string home = "home";
         public static string arrow = "Arrow";

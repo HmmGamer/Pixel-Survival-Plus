@@ -6,7 +6,7 @@ public class ShopManager : MonoBehaviour
 {
     public static ShopManager instance;
 
-    [HideInInspector] public bool _isInShop;
+    [SerializeField] ItemData _currentShopData;
 
     private void Awake()
     {
@@ -15,5 +15,12 @@ public class ShopManager : MonoBehaviour
         else
             Destroy(gameObject);
     }
+    public void _BuyItem()
+    {
 
+    }
+    public void _SetDataOnSelect(ItemData iData)
+    {
+        _currentShopData = iData;
+    }
 }

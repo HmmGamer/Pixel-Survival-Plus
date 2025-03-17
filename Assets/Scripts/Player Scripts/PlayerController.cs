@@ -59,14 +59,11 @@ public class PlayerController : MonoBehaviour
     public static PlayerController instance;
 
     [Header("General Settings")]
-    public int _defaultHp;
-    public int _defaultDamage;
-    public int _defaultArmor;
     [SerializeField] float _recoverHpTime;
     [SerializeField] PlayerCanvasController _canvasController;
 
     int _totalHp;
-    [SerializeField, ReadOnly] int _remainingHp;
+    int _remainingHp;
     int _totalArmor;
 
     private void Awake()
@@ -78,7 +75,6 @@ public class PlayerController : MonoBehaviour
     }
     private void Start()
     {
-        _UpdateStats();
         _remainingHp = _totalHp;
         //_remainingArrows = _totalArrows;
         _canvasController._SetHpText(_remainingHp);
@@ -87,20 +83,22 @@ public class PlayerController : MonoBehaviour
     }
     private void OnEnable()
     {
-        //EquipmentManager._onStatsChange += _UpdateStats;
+        EquipmentManager._onNewStats += _UpdateStats;
     }
     private void OnDisable()
     {
-        //EquipmentManager._onStatsChange -= _UpdateStats;
+        EquipmentManager._onNewStats -= _UpdateStats;
     }
-    private void _UpdateStats()
+    public void _UpdateStats()
     {
-        //_totalHp = EquipmentManager.instance._currentStats._extraHp + _defaultHp;
+        _totalHp = EquipmentManager.Instance._totalStats._hp;
+        _totalArmor = EquipmentManager.Instance._totalStats._armor;
     }
     public void _TakeDamage(int iDamage)
     {
         //if (_hasShield) return;
 
+        iDamage = AAA.HpTools._CalculateDamage(iDamage, _totalArmor);
         _remainingHp -= iDamage;
 
         _canvasController._SetHpText(_remainingHp);

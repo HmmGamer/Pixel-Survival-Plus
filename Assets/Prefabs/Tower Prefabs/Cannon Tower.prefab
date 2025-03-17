@@ -200,7 +200,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _itemData: {fileID: 11400000, guid: 4fe9b72ef60b0fb46b47e6c8ccdc527e, type: 2}
-  _firePlaceTransform: {fileID: 8311664989673244465}
+  _firePos: {fileID: 8311664989673244465}
   _showGizmos: 0
 --- !u!50 &3733553308854614658
 Rigidbody2D:

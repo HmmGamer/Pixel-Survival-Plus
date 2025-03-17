@@ -7,13 +7,12 @@ public class ItemData : ScriptableObject
 {
     [Header("General Info")]
     public _InventoryInfoClass _invInfo;
+    public _ShopInfoClass _shopInfo;
     public _ItemDataType _type;
 
     [Header("Advanced Info")]
-
     [ConditionalEnum(nameof(_type), (int)_ItemDataType.building)]
     public _TowerInfoClass _towerInfo;
-
     [ConditionalEnum(nameof(_type), (int)_ItemDataType.equipment)]
     public _DefenseInfoClass _defenseInfo;
 
@@ -43,7 +42,7 @@ public class ItemData : ScriptableObject
 [System.Serializable]
 public enum _ItemDataType
 {
-    equipment, building, none
+    equipment, building, potion, none
 }
 
 [System.Serializable]
@@ -52,9 +51,6 @@ public class _InventoryInfoClass
     public string _name;
     public string _description;
     public Sprite _inventorySprite;
-
-    public int _buyPrice;
-    public int _sellPrice;
     public int _maxStack = 1;
 }
 [System.Serializable]
@@ -65,6 +61,7 @@ public class _Stats
     public int _armor;
     public float _attackSpeed;
 
+    public _Stats() { }
     public _Stats(int iDamage, int iHp, int iArmor, float iAttkSpeed)
     {
         _damage = iDamage;
@@ -72,6 +69,24 @@ public class _Stats
         _armor = iArmor;
         _attackSpeed = iAttkSpeed;
     }
+    public static _Stats operator +(_Stats a, _Stats b)
+    {
+        return new _Stats(a._damage + b._damage, a._hp + b._hp,
+            a._armor + b._armor, a._attackSpeed + b._attackSpeed);
+    }
+    public void _ResetStats()
+    {
+        _damage = 0;
+        _hp = 0;
+        _armor = 0;
+        _attackSpeed = 0;
+    }
+}
+[System.Serializable]
+public class _ShopInfoClass
+{
+    public int _buyPrice;
+    public int _sellPrice;
 }
 [System.Serializable]
 public class _TowerInfoClass
@@ -85,24 +100,24 @@ public class _TowerInfoClass
 
     public _AllTowerTypes _towerType;
     [ConditionalEnum(nameof(_towerType), (int)_AllTowerTypes.bullets)]
-    public _BulletInfoClass _bulletInfo;
-}
-[System.Serializable]
-public class _BulletInfoClass
-{
     public GameObject _bulletPrefab;
-    public float _bulletSpeed;
-    public float _lifeTime;
 }
 [System.Serializable]
 public class _DefenseInfoClass
 {
     public _AllWearableTypes _wearableType;
-    public Sprite _weaponSprite;
+    public Sprite _equipmentSprite;
     public int _extraDamage;
     public int _extraHp;
     public int _extraArmor;
     public float _attackSpeed;
+
+    public static explicit operator _Stats(_DefenseInfoClass _defenseInfo)
+    {
+        return new _Stats(_defenseInfo._extraDamage, _defenseInfo._extraHp,
+            _defenseInfo._extraArmor, _defenseInfo._attackSpeed);
+    }
+
 }
 [System.Serializable]
 public enum _AllTowerTypes

@@ -5,5 +5,54 @@ using UnityEngine.UI;
 
 public class ShopController : MonoBehaviour
 {
-    [SerializeField] Button _ShopSlots;
+    [SerializeField] Button _buyButton;
+
+    ItemData _currentData;
+    InventorySlot _slot;
+
+    private void Start()
+    {
+        _InitButtons();
+    }
+    private void _InitButtons()
+    {
+        _buyButton.onClick.AddListener(_BuyItem);
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag(A.Tags.player))
+            UiManager.Instance._ActivateInventory(true, false);
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag(A.Tags.player))
+            UiManager.Instance._ActivateInventory(false, false);
+    }
+
+    private void _BuyItem()
+    {
+        if (_currentData == null) return;
+
+        if (MoneyManager.instance._CanPurchaseItem(_currentData))
+        {
+            if (InventoryManager.Instance._AddNewItem(_currentData))
+            {
+                MoneyManager.instance._PurchaseItem(_currentData);
+            }
+        }
+    }
+    public void _SetDataOnSelect(_InvData iData, InventorySlot iSlot)
+    {
+        if (iData == null)
+            _currentData = null;
+        else
+            _currentData = iData._itemData;
+
+        _slot = iSlot;
+        _UpdateUi();
+    }
+    private void _UpdateUi()
+    {
+        _buyButton.gameObject.SetActive(_currentData);
+    }
 }

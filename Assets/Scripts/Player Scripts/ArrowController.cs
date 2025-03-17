@@ -78,8 +78,3 @@ public class ArrowController : MonoBehaviour
 //    }
 //    #endregion
 }
-public class __Off_FutureDevelopments_Comments2
-{
-    /* it is recommended to add a pooling system as soon as possible to improve performance
-     */
-}

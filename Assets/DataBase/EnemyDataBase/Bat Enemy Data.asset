@@ -24,7 +24,7 @@ MonoBehaviour:
     _collisionAttackSpeed: 1
     _collisionDamage: 1
   _movement:
-    _speed: 2.3
+    _speed: 2
     _canFly: 1
     _canJump: 0
   _loots:

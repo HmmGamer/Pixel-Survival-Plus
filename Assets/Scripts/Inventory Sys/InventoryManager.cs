@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(MessageBoxController))]
 public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager Instance;
@@ -17,6 +18,8 @@ public class InventoryManager : MonoBehaviour
     [HideInInspector] public GameObject _dragGameObject;
     public Canvas _inventoryCanvas;
 
+    MessageBoxController _msgBox;
+
     private void Awake()
     {
         if (Instance == null)
@@ -27,6 +30,7 @@ public class InventoryManager : MonoBehaviour
         _dragGameObject = new GameObject("Drag Object");
         _dragGameObject.transform.parent = _inventoryCanvas.transform;
         _dragGameObject.AddComponent<Image>();
+        _dragGameObject.SetActive(false);
     }
     #region Visual
     public void _ShowSlotInfo(ItemData iData)
@@ -90,6 +94,7 @@ public class InventoryManager : MonoBehaviour
             return true;
         }
         // if we are here it means there is no available slot in the inventory
+        _msgBox._StartMsg();
         return false;
     }
     public void _RemoveItemFromSlot(_InvData iData, InventorySlot iSlot)

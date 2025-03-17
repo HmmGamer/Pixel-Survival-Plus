@@ -6,7 +6,7 @@ public class EnemyController : MonoBehaviour
 {
     [SerializeField] EnemyDatabase _enemyData;
 
-    int _currentHp;
+    [SerializeField, ReadOnly] int _currentHp;
     bool _hasCollisionWithPlayer;
     bool _hasCollisionWithHome;
     [HideInInspector] public int _canMove = 0;
@@ -21,6 +21,10 @@ public class EnemyController : MonoBehaviour
     private void OnEnable()
     {
         _ResetEnemy();
+    }
+    private void OnDisable()
+    {
+        StopAllCoroutines();
     }
     private void _ResetEnemy()
     {
@@ -118,16 +122,17 @@ public class EnemyController : MonoBehaviour
         }
     }
     #endregion
-
+    
     #region Death Logic
     public void _TakeDamage(int iDamage)
     {
+
         iDamage = AAA.HpTools._CalculateDamage(iDamage, _enemyData._stats._armor);
         _currentHp -= iDamage;
         if (_currentHp <= 0)
         {
             _DropLoot();
-            PoolManager._despawn(gameObject);
+            Pool._GetInstance(_PoolType.enemy)._Despawn(gameObject);
         }
     }
     public void _DropLoot()
@@ -145,7 +150,7 @@ public class EnemyController : MonoBehaviour
                 if (lootRigidbody != null)
                 {
                     float randomDirection = Random.Range(0f, 1f) > 0.5f ? 1f : -1f; // Random direction: 1 for right, -1 for left
-                    Vector2 force = new Vector2(randomDirection * Random.Range(2f, 5f), Random.Range(3f, 7f)); // Random horizontal and vertical force
+                    Vector2 force = new Vector2(randomDirection * Random.Range(2.5f, 4.5f), Random.Range(4f, 6f)); // Random horizontal and vertical force
                     lootRigidbody.AddForce(force, ForceMode2D.Impulse); // Apply the force instantly
                 }
             }

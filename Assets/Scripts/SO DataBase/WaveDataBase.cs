@@ -11,7 +11,7 @@ public class WaveDataBase : ScriptableObject
     public struct _AllWavesStruct
     {
         [Tooltip("true => spawn enemy as the array. false=> rotate enemy spawn")]
-        public bool _finishEachWaveFirst;
+        public bool _finishEachEnemyFirst;
 
         public float _spawnDelay; 
         public _EachWaveStruct[] _waves;

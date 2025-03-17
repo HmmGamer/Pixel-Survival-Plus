@@ -4,13 +4,32 @@ using UnityEngine;
 
 public class TestScript : MonoBehaviour
 {
-    public bool _e2;
-    [ConditionField(nameof(_e2))] public _C _c;
+    public static TestScript instance;
 
-    [System.Serializable]
-    public class _C
+    public GameObject[] _ObjectForSpawn;
+    int spawnIndex;
+    List<GameObject> _SpawnList = new List<GameObject>();
+
+    public GameObject _myInstantiate(GameObject iObject, Vector3 iPos, Quaternion iRotation)
     {
-        public bool _e;
-        [ConditionField(nameof(_e))] public int _i;
+        foreach (GameObject oldObject in _SpawnList)
+        {
+            if (!oldObject.activeInHierarchy)
+            {
+                if (oldObject.name.StartsWith(iObject.name))
+                {
+                    oldObject.SetActive(true);
+
+
+                    oldObject.transform.position = iPos;
+                    oldObject.transform.rotation = iRotation;
+                    return oldObject;
+                }
+
+            }
+
+        }
+        _SpawnList.Add(Instantiate(iObject, iPos, iRotation));
+        return iObject;
     }
 }

@@ -16,20 +16,23 @@ MonoBehaviour:
     _name: Steel Sword
     _description: wow it's really a good sword
     _inventorySprite: {fileID: 21300000, guid: 3fc03c83e49d74a42bbabcdfaac9a080, type: 3}
-    _buyPrice: 100
-    _sellPrice: 25
     _maxStack: 1
-  _canBePlaced: 0
-  _attackInfo:
-    _prefab: {fileID: 0}
+  _shopInfo:
+    _buyPrice: 80
+    _sellPrice: 25
+  _type: 0
+  _towerInfo:
+    _towerPrefab: {fileID: 0}
     _damage: 0
     _hp: 0
     _armor: 0
     _attackSpeed: 0
-  _canBeWorn: 1
+    _attackRange: 0
+    _towerType: 0
+    _bulletPrefab: {fileID: 0}
   _defenseInfo:
     _wearableType: 4
-    _weaponSprite: {fileID: 21300000, guid: 4ed8ae5109906b4499d5e8e59754db16, type: 3}
+    _equipmentSprite: {fileID: 0}
     _extraDamage: 7
     _extraHp: 0
     _extraArmor: 0
