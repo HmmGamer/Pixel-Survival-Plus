@@ -27,8 +27,13 @@ public class InventoryManager : MonoBehaviour
         else
             Destroy(gameObject);
 
+        _InstantiateDragObject();
+    }
+    private void _InstantiateDragObject()
+    {
         _dragGameObject = new GameObject("Drag Object");
         _dragGameObject.transform.parent = _inventoryCanvas.transform;
+        _dragGameObject.transform.localScale = Vector3.one;
         _dragGameObject.AddComponent<Image>();
         _dragGameObject.SetActive(false);
     }

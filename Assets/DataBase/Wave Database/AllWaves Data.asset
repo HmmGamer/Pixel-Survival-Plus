@@ -17,12 +17,8 @@ MonoBehaviour:
     _spawnDelay: 4.2
     _waves:
     - _enemyPrefab: {fileID: 8011895756465326400, guid: 085e507986f9d2d46ad55a015973d5ec, type: 3}
+      _canFly: 0
       _count: 12
-  - _finishEachEnemyFirst: 0
-    _spawnDelay: 0
-    _waves:
-    - _enemyPrefab: {fileID: 0}
-      _count: 0
   - _finishEachEnemyFirst: 0
     _spawnDelay: 0
     _waves: []

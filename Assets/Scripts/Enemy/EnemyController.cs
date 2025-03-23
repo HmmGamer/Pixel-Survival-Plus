@@ -122,7 +122,12 @@ public class EnemyController : MonoBehaviour
         }
     }
     #endregion
-    
+    #region Geters
+    public bool _GetCanFly()
+    {
+        return _enemyData._movement._canFly;
+    }
+    #endregion
     #region Death Logic
     public void _TakeDamage(int iDamage)
     {
@@ -143,7 +148,7 @@ public class EnemyController : MonoBehaviour
 
             if (_loot != null)
             {
-                GameObject lootInstance = PoolManager._Instantiate(_loot, transform.position, Quaternion.identity);
+                GameObject lootInstance = Pool._GetInstance(_PoolType.enemy)._Instantiate(_loot, transform.position, Quaternion.identity);
 
                 Rigidbody2D lootRigidbody = lootInstance.GetComponent<Rigidbody2D>();
 

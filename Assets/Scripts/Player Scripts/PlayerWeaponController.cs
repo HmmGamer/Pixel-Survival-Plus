@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Collider2D))]
+// reminder : you need to activate weapon collider in the animation
 [RequireComponent(typeof(SpriteRenderer))]
 public class PlayerWeaponController : MonoBehaviour
 {
@@ -38,9 +38,19 @@ public class PlayerWeaponController : MonoBehaviour
     }
     private void _Attack()
     {
-        if (_canAttack && _attackSpeed > 0)
+        if (!_canAttack) return;
+
+        if (_attackSpeed > 0)
         {
+            // this part is for weapon attack
+            _anim.speed = 1;
             StartCoroutine(_WeaponCoolDown());
+        }
+        else
+        {
+            // this part is for basic hand attack
+            _anim.speed = 2;
+            StartCoroutine(_WeaponCoolDown(0.5f));
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)
@@ -50,16 +60,17 @@ public class PlayerWeaponController : MonoBehaviour
             collision.GetComponent<EnemyController>()._TakeDamage(_weaponDamage);
         }
     }
-    private IEnumerator _WeaponCoolDown()
+    private IEnumerator _WeaponCoolDown(float iManualCd = 0)
     {
         _canAttack = false;
-        GetComponent<Collider2D>().enabled = true;
 
-        _anim.speed = 1 / _attackSpeed;
         _anim.SetTrigger(A.Anim.PlayerAttack);
 
-        yield return new WaitForSeconds(_attackSpeed);
-        GetComponent<Collider2D>().enabled = false;
+        if (iManualCd > 0)
+            yield return new WaitForSeconds(iManualCd);
+        else
+            yield return new WaitForSeconds(_attackSpeed);
+
         _canAttack = true;
     }
 }

@@ -1,10 +1,13 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class OpenShopController : MonoBehaviour
 {
+    [Header("General Settings")]
+    [SerializeField] float _closeShopDistance;
+
+    [Header("Attachments")]
     [Tooltip("The Parent of ( shop, sell, controller")]
     [SerializeField] GameObject _allCanvases;
     [SerializeField] GameObject _shopCanvas;
@@ -14,12 +17,13 @@ public class OpenShopController : MonoBehaviour
     [SerializeField] Button _exitButton;
 
     bool _isOpen;
+    Coroutine _exitHandler;
 
     private void Start()
     {
         _shopTabButton.onClick.AddListener(() => _ChangeTab(_AllTabTypes.shop));
         _SellTabButton.onClick.AddListener(() => _ChangeTab(_AllTabTypes.sell));
-        _exitButton.onClick.AddListener(() => { _allCanvases.SetActive(false); });
+        _exitButton.onClick.AddListener(() => _CanvasesActivation(false));
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -28,16 +32,9 @@ public class OpenShopController : MonoBehaviour
             _CanvasesActivation(true);
         }
     }
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag(A.Tags.player) && _isOpen)
-        {
-            _CanvasesActivation(false);
-        }
-    }
     private void _CanvasesActivation(bool iActivation)
     {
-        if (iActivation && !_isOpen)
+        if (iActivation && !_isOpen) //enter
         {
             _isOpen = true;
             _shopTabButton.interactable = false;
@@ -46,12 +43,15 @@ public class OpenShopController : MonoBehaviour
             _shopCanvas.SetActive(true);
             _allCanvases.SetActive(true);
             _sellCanvas.SetActive(false);
+
+            _exitHandler = StartCoroutine(_CheckPlayerDistance());
         }
-        else if (!iActivation && _isOpen)
+        else if (!iActivation && _isOpen) //exit
         {
             _isOpen = false;
             UiManager.Instance._ActivateInventory(false);
             _allCanvases.SetActive(false);
+            _exitHandler = null;
         }
     }
     private void _ChangeTab(_AllTabTypes iType)
@@ -61,6 +61,22 @@ public class OpenShopController : MonoBehaviour
 
         _shopCanvas.SetActive(iType == _AllTabTypes.shop);
         _sellCanvas.SetActive(iType == _AllTabTypes.sell);
+    }
+
+    /// <summary>
+    /// this custom update makes sure the player can't move too far from the shop
+    /// </summary>
+    private IEnumerator _CheckPlayerDistance()
+    {
+        while (true)
+        {
+            if (Vector2.Distance(PlayerController.instance.transform.position, transform.position) > _closeShopDistance)
+            {
+                _CanvasesActivation(false);
+                break;
+            }
+            yield return new WaitForSeconds(0.5f);
+        }
     }
     public enum _AllTabTypes
     {

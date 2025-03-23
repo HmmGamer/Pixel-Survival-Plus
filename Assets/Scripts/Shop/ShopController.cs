@@ -18,17 +18,6 @@ public class ShopController : MonoBehaviour
     {
         _buyButton.onClick.AddListener(_BuyItem);
     }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag(A.Tags.player))
-            UiManager.Instance._ActivateInventory(true, false);
-    }
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag(A.Tags.player))
-            UiManager.Instance._ActivateInventory(false, false);
-    }
-
     private void _BuyItem()
     {
         if (_currentData == null) return;

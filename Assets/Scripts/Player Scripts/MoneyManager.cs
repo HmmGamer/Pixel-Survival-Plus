@@ -46,7 +46,7 @@ public class MoneyManager : MonoBehaviour
     }
     public bool _PurchaseItem(ItemData iData, bool iShowTimeline = true)
     {
-        if (iData._shopInfo._sellPrice <= _totalMoney)
+        if (iData._shopInfo._buyPrice <= _totalMoney)
         {
             _totalMoney -= iData._shopInfo._sellPrice;
             _UpdateUi();
@@ -66,7 +66,7 @@ public class MoneyManager : MonoBehaviour
     }
     public bool _CanPurchaseItem(ItemData iData, bool iShowTimeline = true)
     {
-        if (iData._shopInfo._sellPrice <= _totalMoney)
+        if (iData._shopInfo._buyPrice <= _totalMoney)
         {
             return true;
         }

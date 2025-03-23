@@ -15,7 +15,7 @@ public class MoneyController : MonoBehaviour
         if (collision.gameObject.CompareTag(A.Tags.player))
         {
             MoneyManager.instance._AddMoney(_coinCount);
-            PoolManager._despawn(gameObject);
+            Pool._GetInstance(_PoolType.item)._Despawn(gameObject);
         }
     }
     private void _DisablePhysics()

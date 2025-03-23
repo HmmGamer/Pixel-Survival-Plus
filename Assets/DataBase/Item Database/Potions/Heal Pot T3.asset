@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a326718dc7dacfd45a0ca6551d5dc87f, type: 3}
-  m_Name: Farmer Hat
+  m_Name: Heal Pot T3
   m_EditorClassIdentifier: 
   _invInfo:
-    _name: Farmer's Hat
-    _description: hat of a lovely farmer
-    _inventorySprite: {fileID: 21300000, guid: 3fc03c83e49d74a42bbabcdfaac9a080, type: 3}
-    _maxStack: 1
+    _name: Healing Pot T3
+    _description: restore's 60 Hp instantly
+    _inventorySprite: {fileID: 21300000, guid: 03fa04fe1d1f5394cb4d8d677128723c, type: 3}
+    _maxStack: 5
   _shopInfo:
-    _buyPrice: 100
-    _sellPrice: 10
-  _type: 0
+    _buyPrice: 50
+    _sellPrice: 15
+  _type: 2
   _towerInfo:
     _towerPrefab: {fileID: 0}
     _damage: 0
@@ -29,14 +29,14 @@ MonoBehaviour:
     _attackSpeed: 0
     _attackRange: 0
     _towerType: 0
-    _bulletInfo:
-      _bulletPrefab: {fileID: 0}
-      _bulletSpeed: 0
-      _lifeTime: 0
+    _bulletPrefab: {fileID: 0}
   _defenseInfo:
-    _wearableType: 1
+    _wearableType: 0
     _equipmentSprite: {fileID: 0}
     _extraDamage: 0
-    _extraHp: 3
-    _extraArmor: 1
+    _extraHp: 0
+    _extraArmor: 0
     _attackSpeed: 0
+  _potionInfo:
+    _type: 0
+    _hpRestore: 60

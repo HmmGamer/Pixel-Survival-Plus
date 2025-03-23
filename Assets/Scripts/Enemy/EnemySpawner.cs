@@ -13,7 +13,8 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] bool _autoStart = false;
 
     [Header("Attachments")]
-    [SerializeField] Transform _spawnPos;
+    [SerializeField] Transform _groundSpawnPos;
+    [SerializeField] Transform _airSpawnPos;
     [SerializeField] Text _remainingEnemiesText;
     [SerializeField] Button _startNextWaveButton;
 
@@ -72,7 +73,7 @@ public class EnemySpawner : MonoBehaviour
                 {
                     if (enemyCounts[i] > 0)
                     {
-                        yield return SpawnEnemy(currentWave._waves[i]._enemyPrefab);
+                        SpawnEnemy(currentWave._waves[i]._enemyPrefab, currentWave._waves[i]._canFly);
                         enemyCounts[i]--;
                         yield return new WaitForSeconds(currentWave._spawnDelay);
                     }
@@ -94,14 +95,16 @@ public class EnemySpawner : MonoBehaviour
     {
         for (int i = 0; i < wave._count; i++)
         {
-            yield return SpawnEnemy(wave._enemyPrefab);
+            SpawnEnemy(wave._enemyPrefab, wave._canFly);
             yield return new WaitForSeconds(_waveData._allWaves[_currentWaveIndex]._spawnDelay);
         }
     }
-    private IEnumerator SpawnEnemy(GameObject enemyPrefab)
+    private void SpawnEnemy(GameObject enemyPrefab, bool iCanFly)
     {
-        _pool._Instantiate(enemyPrefab, _spawnPos.position,Quaternion.identity);
-        yield return null;
+        if (iCanFly)
+            _pool._Instantiate(enemyPrefab, _airSpawnPos.position, Quaternion.identity);
+        else
+            _pool._Instantiate(enemyPrefab, _groundSpawnPos.position, Quaternion.identity);
     }
     private bool HasRemainingEnemies(WaveDataBase._AllWavesStruct wave)
     {

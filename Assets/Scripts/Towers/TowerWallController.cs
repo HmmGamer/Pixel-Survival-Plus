@@ -19,7 +19,7 @@ public class TowerWallController : MonoBehaviour
 
         if (iDamage >= _currentHp)
         {
-            PoolManager._despawn(gameObject);
+            Pool._GetInstance(_PoolType.item)._Despawn(gameObject);
         }
     }
 }

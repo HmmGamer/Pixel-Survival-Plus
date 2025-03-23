@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a326718dc7dacfd45a0ca6551d5dc87f, type: 3}
+  m_Name: Heal Pot T2
+  m_EditorClassIdentifier: 
+  _invInfo:
+    _name: Healing Pot T2
+    _description: restore's 25 Hp instantly
+    _inventorySprite: {fileID: 21300000, guid: 03fa04fe1d1f5394cb4d8d677128723c, type: 3}
+    _maxStack: 5
+  _shopInfo:
+    _buyPrice: 20
+    _sellPrice: 6
+  _type: 2
+  _towerInfo:
+    _towerPrefab: {fileID: 0}
+    _damage: 0
+    _hp: 0
+    _armor: 0
+    _attackSpeed: 0
+    _attackRange: 0
+    _towerType: 0
+    _bulletPrefab: {fileID: 0}
+  _defenseInfo:
+    _wearableType: 0
+    _equipmentSprite: {fileID: 0}
+    _extraDamage: 0
+    _extraHp: 0
+    _extraArmor: 0
+    _attackSpeed: 0
+  _potionInfo:
+    _type: 0
+    _hpRestore: 25

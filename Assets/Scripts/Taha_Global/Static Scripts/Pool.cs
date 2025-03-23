@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Pool;
 
 public class Pool : MonoBehaviour
 {
@@ -76,5 +75,5 @@ public class _PooledObject : MonoBehaviour
 }
 public enum _PoolType
 {
-    enemy, tower, item , bullet
+    enemy, tower, item, bullet
 }

@@ -17,7 +17,7 @@ public class ShopSlot : MonoBehaviour
         _invSlot = GetComponent<InventorySlot>();
         _invSlot._data = new _InvData(_itemForSell);
         _invSlot._UpdateUi();
-        _priceText.text = _itemForSell._shopInfo._sellPrice.ToString();
+        _priceText.text = _itemForSell._shopInfo._buyPrice.ToString();
     }
     private void OnEnable()
     {

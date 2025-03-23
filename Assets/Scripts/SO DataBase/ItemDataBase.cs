@@ -15,6 +15,8 @@ public class ItemData : ScriptableObject
     public _TowerInfoClass _towerInfo;
     [ConditionalEnum(nameof(_type), (int)_ItemDataType.equipment)]
     public _DefenseInfoClass _defenseInfo;
+    [ConditionalEnum(nameof(_type), (int)_ItemDataType.potion)]
+    public _PotionInfoClass _potionInfo;
 
     private void Awake()
     {
@@ -25,7 +27,7 @@ public class ItemData : ScriptableObject
     {
         if (_type == _ItemDataType.equipment)
         {
-            return new _Stats(_defenseInfo._extraDamage, _defenseInfo._extraHp
+            return new _Stats(_defenseInfo._damage, _defenseInfo._extraHp
                 , _defenseInfo._extraArmor, _defenseInfo._attackSpeed);
         }
         else if (_type == _ItemDataType.building)
@@ -39,12 +41,7 @@ public class ItemData : ScriptableObject
         }
     }
 }
-[System.Serializable]
-public enum _ItemDataType
-{
-    equipment, building, potion, none
-}
-
+#region types
 [System.Serializable]
 public class _InventoryInfoClass
 {
@@ -92,9 +89,9 @@ public class _ShopInfoClass
 public class _TowerInfoClass
 {
     public GameObject _towerPrefab;
-    public int _damage;
     public int _hp;
     public int _armor;
+    public int _damage;
     public float _attackSpeed;
     public int _attackRange;
 
@@ -103,21 +100,38 @@ public class _TowerInfoClass
     public GameObject _bulletPrefab;
 }
 [System.Serializable]
+public class _PotionInfoClass
+{
+    public _AllPotionTypes _type;
+    public int _hpRestore;
+}
+[System.Serializable]
 public class _DefenseInfoClass
 {
     public _AllWearableTypes _wearableType;
     public Sprite _equipmentSprite;
-    public int _extraDamage;
     public int _extraHp;
     public int _extraArmor;
-    public float _attackSpeed;
+    [ConditionalEnum(nameof(_wearableType), (int)_AllWearableTypes.weapon)] public int _damage;
+    [ConditionalEnum(nameof(_wearableType), (int)_AllWearableTypes.weapon)] public float _attackSpeed;
 
     public static explicit operator _Stats(_DefenseInfoClass _defenseInfo)
     {
-        return new _Stats(_defenseInfo._extraDamage, _defenseInfo._extraHp,
+        return new _Stats(_defenseInfo._damage, _defenseInfo._extraHp,
             _defenseInfo._extraArmor, _defenseInfo._attackSpeed);
     }
-
+}
+#endregion
+#region enums
+[System.Serializable]
+public enum _ItemDataType
+{
+    equipment, building, potion, none
+}
+[System.Serializable]
+public enum _AllPotionTypes
+{
+    heal
 }
 [System.Serializable]
 public enum _AllTowerTypes
@@ -129,3 +143,4 @@ public enum _AllWearableTypes
 {
     none, head, body, legs, weapon, shield
 }
+#endregion
