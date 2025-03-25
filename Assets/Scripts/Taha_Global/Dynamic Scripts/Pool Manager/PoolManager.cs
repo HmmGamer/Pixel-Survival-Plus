@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pool : MonoBehaviour
+public class PoolManager : MonoBehaviour
 {
-    private static Dictionary<_PoolType, Pool> _instances = new Dictionary<_PoolType, Pool>();
+    private static Dictionary<_PoolType, PoolManager> _instances = new Dictionary<_PoolType, PoolManager>();
 
     private Dictionary<GameObject, Stack<GameObject>> _pools = new Dictionary<GameObject, Stack<GameObject>>();
     [SerializeField] private int _preloadAmount = 5;
@@ -22,9 +22,9 @@ public class Pool : MonoBehaviour
             Debug.LogError("You have more than one pool with the same type: " + _poolType);
         }
     }
-    public static Pool _GetInstance(_PoolType _poolType)
+    public static PoolManager _GetInstance(_PoolType _poolType)
     {
-        return _instances.TryGetValue(_poolType, out Pool _instance) ? _instance : null;
+        return _instances.TryGetValue(_poolType, out PoolManager _instance) ? _instance : null;
     }
     public GameObject _Instantiate(GameObject _iGameObject)
     {

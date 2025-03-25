@@ -37,11 +37,12 @@ public class ButtonManager : MonoBehaviour
         }
         else if (iData._type == _ItemDataType.potion)
         {
-            _ChangeEvent(() =>
-            {
-                BuildController.Instance._BuildObject(iData._towerInfo._towerPrefab);
-                _RemoveFromInventory();
-            });
+            if (iData._potionInfo._type == _AllPotionTypes.heal)
+                _ChangeEvent(() =>
+                {
+                    PlayerController.instance._ConsumeHpPotion(iData._potionInfo._hpRestore);
+                    _RemoveFromInventory();
+                });
         }
     }
     private void _ChangeEvent(UnityAction iNewAction)
@@ -51,6 +52,10 @@ public class ButtonManager : MonoBehaviour
     }
     private void _RemoveFromInventory()
     {
-        _currentSlot._UseItem();
+        _currentSlot._RemoveItem();
     }
+}
+public class __FutureUpdates2
+{
+    // activate use button for equipping as well
 }

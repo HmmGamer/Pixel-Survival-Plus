@@ -37,7 +37,7 @@ public class ItemPickUp : MonoBehaviour
         {
             if (InventoryManager.Instance._AddNewItem(_item))
             {
-                Pool._GetInstance(_PoolType.item)._Despawn(gameObject);
+                PoolManager._GetInstance(_PoolType.item)._Despawn(gameObject);
             }
         }
     }

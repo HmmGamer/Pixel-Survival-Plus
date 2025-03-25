@@ -22,7 +22,7 @@ MonoBehaviour:
     _sellPrice: 3
   _type: 1
   _towerInfo:
-    _towerPrefab: {fileID: 8544809547718646516, guid: d31b9ccc4e1ce70409c162dcf1712a17, type: 3}
+    _towerPrefab: {fileID: 8544809547718646516, guid: fb4ed1bcd5d8b714f9a037e850ae8c9d, type: 3}
     _hp: 6
     _armor: 0
     _damage: 2

@@ -101,8 +101,7 @@ public class PlayerController : MonoBehaviour
         iDamage = AAA.HpTools._CalculateDamage(iDamage, _totalArmor);
         _remainingHp -= iDamage;
 
-        _canvasController._SetHpText(_remainingHp);
-
+        _UpdateUi();
         if (_remainingHp <= 0)
         {
             _Death();
@@ -112,6 +111,10 @@ public class PlayerController : MonoBehaviour
         //{
         //    StartCoroutine(_ShieldCooldown());
         //}
+    }
+    private void _UpdateUi()
+    {
+        _canvasController._SetHpText(_remainingHp);
     }
     private void _Death()
     {
@@ -137,5 +140,6 @@ public class PlayerController : MonoBehaviour
         {
             _remainingHp = _totalHp;
         }
+        _UpdateUi();
     }
 }

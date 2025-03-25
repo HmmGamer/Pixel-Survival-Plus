@@ -35,10 +35,13 @@ public class ItemData : ScriptableObject
             return new _Stats(_towerInfo._damage, _towerInfo._hp
                 , _towerInfo._armor, _towerInfo._attackSpeed);
         }
-        else
+        else if (_type == _ItemDataType.potion)
         {
-            return null;
+            if (_potionInfo._type == _AllPotionTypes.heal)
+                return new _Stats(0, _potionInfo._hpRestore, 0, 0);
         }
+
+        return null;
     }
 }
 #region types

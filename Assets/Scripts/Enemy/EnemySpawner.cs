@@ -20,7 +20,7 @@ public class EnemySpawner : MonoBehaviour
 
     private int _currentWaveIndex = 0;
     private bool _isSpawning = false;
-    Pool _pool;
+    PoolManager _pool;
 
     #region Starter
     private void Awake()
@@ -30,7 +30,7 @@ public class EnemySpawner : MonoBehaviour
         else
             Destroy(gameObject);
 
-        _pool = Pool._GetInstance(_PoolType.enemy);
+        _pool = PoolManager._GetInstance(_PoolType.enemy);
     }
     private void Start()
     {

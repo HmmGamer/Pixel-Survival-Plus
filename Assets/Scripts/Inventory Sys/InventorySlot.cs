@@ -82,7 +82,7 @@ public class InventorySlot : MonoBehaviour
         _onNewSelection?.Invoke();
         return true;
     }
-    public void _UseItem(int iCount = 1)
+    public void _RemoveItem(int iCount = 1)
     {
         _data._quantity -= iCount;
 

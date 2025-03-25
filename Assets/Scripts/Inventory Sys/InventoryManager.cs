@@ -130,6 +130,5 @@ public class InventoryManager : MonoBehaviour
         [Header("Info Text Attachments")]
         public Text _itemNameText;
         public Text _itemDescriptionText;
-        public Button _useButton;
     }
 }

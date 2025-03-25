@@ -100,7 +100,7 @@ GameObject:
   - component: {fileID: 3733553308854614658}
   - component: {fileID: 7658762420170046369}
   m_Layer: 10
-  m_Name: Cannon Tower
+  m_Name: Cannon T1
   m_TagString: tower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

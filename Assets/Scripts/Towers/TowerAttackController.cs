@@ -29,7 +29,7 @@ public class TowerAttackController : MonoBehaviour
         if (!_canAttack) return;
         StartCoroutine(_AttackCoolDown());
 
-        GameObject bullet = Pool._GetInstance(_PoolType.bullet)._Instantiate
+        GameObject bullet = PoolManager._GetInstance(_PoolType.bullet)._Instantiate
             (_itemData._towerInfo._bulletPrefab, _firePos.position, Quaternion.identity);
 
         bullet.GetComponent<BulletController>()._StartTheBullet(_itemData);

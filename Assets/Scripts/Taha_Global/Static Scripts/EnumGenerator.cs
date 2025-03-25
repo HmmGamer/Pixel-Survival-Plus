@@ -3,6 +3,12 @@ using System.IO;
 using UnityEditor;
 #endif
 using UnityEngine;
+/// <summary>
+/// this class makes an enum for you based on an string array
+/// it can also be called in the editor as well with the [CreateButton] attribute
+/// 
+/// read comments for more info
+/// </summary>
 public static class EnumGenerator
 {
     private const string GENERATION_PATH = "Assets/Others/GeneratedEnums";

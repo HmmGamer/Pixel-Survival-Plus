@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a326718dc7dacfd45a0ca6551d5dc87f, type: 3}
-  m_Name: Rusty Sword
+  m_Name: leather Armor
   m_EditorClassIdentifier: 
   _invInfo:
-    _name: Rusty Sword
-    _description: it's rusty but it's better than nothing!
+    _name: leather Armor
+    _description: an Armor made of leather
     _inventorySprite: {fileID: 21300000, guid: 3fc03c83e49d74a42bbabcdfaac9a080, type: 3}
     _maxStack: 1
   _shopInfo:
-    _buyPrice: 30
+    _buyPrice: 35
     _sellPrice: 10
   _type: 0
   _towerInfo:
@@ -31,12 +31,12 @@ MonoBehaviour:
     _towerType: 0
     _bulletPrefab: {fileID: 0}
   _defenseInfo:
-    _wearableType: 4
-    _equipmentSprite: {fileID: 21300000, guid: 2dc32f3433e8c1343aa5b19c9f5016e1, type: 3}
-    _extraHp: 0
-    _extraArmor: 0
-    _damage: 4
-    _attackSpeed: 0.8
+    _wearableType: 2
+    _equipmentSprite: {fileID: 0}
+    _extraHp: 8
+    _extraArmor: 4
+    _damage: 0
+    _attackSpeed: 0
   _potionInfo:
     _type: 0
     _hpRestore: 0

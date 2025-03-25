@@ -137,7 +137,7 @@ public class EnemyController : MonoBehaviour
         if (_currentHp <= 0)
         {
             _DropLoot();
-            Pool._GetInstance(_PoolType.enemy)._Despawn(gameObject);
+            PoolManager._GetInstance(_PoolType.enemy)._Despawn(gameObject);
         }
     }
     public void _DropLoot()
@@ -148,7 +148,7 @@ public class EnemyController : MonoBehaviour
 
             if (_loot != null)
             {
-                GameObject lootInstance = Pool._GetInstance(_PoolType.enemy)._Instantiate(_loot, transform.position, Quaternion.identity);
+                GameObject lootInstance = PoolManager._GetInstance(_PoolType.enemy)._Instantiate(_loot, transform.position, Quaternion.identity);
 
                 Rigidbody2D lootRigidbody = lootInstance.GetComponent<Rigidbody2D>();
 
