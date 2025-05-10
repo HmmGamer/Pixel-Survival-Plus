@@ -119,7 +119,7 @@ public class PlayerController : MonoBehaviour
     private void _Death()
     {
         gameObject.SetActive(false);
-        // respawn somewhere else in the future
+        GameManager.Instance._GameOver();
     }
     private IEnumerator _AddHpOverTimeCoolDown()
     {

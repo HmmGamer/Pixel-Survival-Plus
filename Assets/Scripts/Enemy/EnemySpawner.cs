@@ -10,7 +10,9 @@ public class EnemySpawner : MonoBehaviour
     [Header("General Settings")]
     [SerializeField] WaveDataBase _waveData;
     [SerializeField] int _defaultLevel;
+
     [SerializeField] bool _autoStart = false;
+    [SerializeField, ConditionField(nameof(_autoStart))] float _startDelay;
 
     [Header("Attachments")]
     [SerializeField] Transform _groundSpawnPos;
@@ -20,7 +22,6 @@ public class EnemySpawner : MonoBehaviour
 
     private int _currentWaveIndex = 0;
     private bool _isSpawning = false;
-    PoolManager _pool;
 
     #region Starter
     private void Awake()
@@ -29,15 +30,14 @@ public class EnemySpawner : MonoBehaviour
             Instance = this;
         else
             Destroy(gameObject);
-
-        _pool = PoolManager._GetInstance(_PoolType.enemy);
     }
     private void Start()
     {
         _InitButtons();
         _currentWaveIndex = _defaultLevel;
+
         if (_autoStart)
-            _StartNextWave();
+            Invoke(nameof(_StartNextWave), _startDelay);
     }
     private void _InitButtons()
     {
@@ -57,7 +57,7 @@ public class EnemySpawner : MonoBehaviour
         {
             enemyCounts[i] = currentWave._waves[i]._count;
         }
-
+        
         if (currentWave._finishEachEnemyFirst)
         {
             for (int i = 0; i < currentWave._waves.Length; i++)
@@ -101,10 +101,10 @@ public class EnemySpawner : MonoBehaviour
     }
     private void SpawnEnemy(GameObject enemyPrefab, bool iCanFly)
     {
-        if (iCanFly)
-            _pool._Instantiate(enemyPrefab, _airSpawnPos.position, Quaternion.identity);
+        if (iCanFly) 
+            PoolManager._GetInstance(_PoolType.enemy)._Instantiate(enemyPrefab, _airSpawnPos.position, Quaternion.identity);
         else
-            _pool._Instantiate(enemyPrefab, _groundSpawnPos.position, Quaternion.identity);
+            PoolManager._GetInstance(_PoolType.enemy)._Instantiate(enemyPrefab, _groundSpawnPos.position, Quaternion.identity);
     }
     private bool HasRemainingEnemies(WaveDataBase._AllWavesStruct wave)
     {

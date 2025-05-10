@@ -26,7 +26,7 @@ MonoBehaviour:
     _hp: 6
     _armor: 0
     _damage: 2
-    _attackSpeed: 1.5
+    _attackSpeed: 1.55
     _attackRange: 8
     _towerType: 0
     _bulletPrefab: {fileID: 6918753477090465622, guid: 54fcfa85ba9deb5439494d02e7224229, type: 3}

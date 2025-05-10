@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96d630ee61ca38240b786e7fcee81930, type: 3}
+  m_Name: Slime Boss Enemy Data
+  m_EditorClassIdentifier: 
+  _stats:
+    _hp: 80
+    _armor: 5
+  _view:
+    _attackRange: 0
+    _playerLockRange: 3
+  _damage:
+    _attackSpeed: 0
+    _attackDamage: 0
+    _collisionAttackSpeed: 1
+    _collisionDamage: 3
+  _movement:
+    _speed: 1.2
+    _canFly: 0
+    _canJump: 0
+  _loots:
+  - {fileID: 11400000, guid: bb6aaf64c2bb06d4c9924a9d07e72347, type: 2}

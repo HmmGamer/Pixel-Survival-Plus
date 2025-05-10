@@ -19,7 +19,7 @@ public class PoolManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
-            Debug.LogError("You have more than one pool with the same type: " + _poolType);
+            //Debug.LogError("You have more than one pool with the same type: " + _poolType);
         }
     }
     public static PoolManager _GetInstance(_PoolType _poolType)

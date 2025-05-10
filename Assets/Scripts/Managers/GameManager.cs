@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    [SerializeField] GameObject _GameOverCanvas;
+
     private void Awake()
     {
         if (Instance == null)
@@ -18,6 +20,7 @@ public class GameManager : MonoBehaviour
     }
     public void _GameOver()
     {
-        EnemySpawner.Instance._ResetSpawner();
+        //EnemySpawner.Instance._ResetSpawner();
+        _GameOverCanvas.gameObject.SetActive(true);
     }
 }

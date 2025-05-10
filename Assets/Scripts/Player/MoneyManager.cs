@@ -25,20 +25,44 @@ public class MoneyManager : MonoBehaviour
     }
     private void Start()
     {
+        _LoadMoney();
         _msgBox = GetComponent<MessageBoxController>();
         _UpdateUi();
+    }
+    public void _LoadMoney()
+    {
+        _totalMoney = PlayerPrefs.GetInt(A.DataKey.money, _Default_SCoin);
+    }
+    public void _SaveMoney()
+    {
+        PlayerPrefs.SetInt(A.DataKey.money, _totalMoney);
+    }
+    [CreateButton("Reset Money")]
+    public void _ResetMoney()
+    {
+        PlayerPrefs.DeleteKey(A.DataKey.money);
+        _LoadMoney();
     }
     public void _AddMoney(int iAmount)
     {
         _totalMoney += iAmount;
         _UpdateUi();
+        _SaveMoney();
     }
+#if UNITY_EDITOR
+    [CreateButton("Add 100 Money")]
+    public void _AddCheatMoney()
+    {
+        _AddMoney(100);
+    }
+#endif
     public bool _PurchaseItem(int iCost, bool iShowTimeline = true)
     {
         if (iCost <= _totalMoney)
         {
             _totalMoney -= iCost;
             _UpdateUi();
+            _SaveMoney();
             return true;
         }
         _ShowPurchaseTimeline(iShowTimeline);
@@ -50,6 +74,7 @@ public class MoneyManager : MonoBehaviour
         {
             _totalMoney -= iData._shopInfo._sellPrice;
             _UpdateUi();
+            _SaveMoney();
             return true;
         }
         _ShowPurchaseTimeline(iShowTimeline);

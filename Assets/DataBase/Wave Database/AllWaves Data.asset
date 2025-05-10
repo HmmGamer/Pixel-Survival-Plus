@@ -18,7 +18,55 @@ MonoBehaviour:
     _waves:
     - _enemyPrefab: {fileID: 8011895756465326400, guid: 085e507986f9d2d46ad55a015973d5ec, type: 3}
       _canFly: 0
-      _count: 12
+      _count: 10
   - _finishEachEnemyFirst: 0
-    _spawnDelay: 0
-    _waves: []
+    _spawnDelay: 4.1
+    _waves:
+    - _enemyPrefab: {fileID: 8011895756465326400, guid: 085e507986f9d2d46ad55a015973d5ec, type: 3}
+      _canFly: 0
+      _count: 5
+    - _enemyPrefab: {fileID: 8011895756465326400, guid: 085e507986f9d2d46ad55a015973d5ec, type: 3}
+      _canFly: 0
+      _count: 5
+    - _enemyPrefab: {fileID: 3760816855847393655, guid: 8081889401bec934cb5cc57f7069f701, type: 3}
+      _canFly: 1
+      _count: 5
+  - _finishEachEnemyFirst: 0
+    _spawnDelay: 3.7
+    _waves:
+    - _enemyPrefab: {fileID: 8011895756465326400, guid: 085e507986f9d2d46ad55a015973d5ec, type: 3}
+      _canFly: 0
+      _count: 4
+    - _enemyPrefab: {fileID: 8011895756465326400, guid: 085e507986f9d2d46ad55a015973d5ec, type: 3}
+      _canFly: 0
+      _count: 4
+    - _enemyPrefab: {fileID: 3760816855847393655, guid: 8081889401bec934cb5cc57f7069f701, type: 3}
+      _canFly: 1
+      _count: 8
+  - _finishEachEnemyFirst: 0
+    _spawnDelay: 3.7
+    _waves:
+    - _enemyPrefab: {fileID: 8011895756465326400, guid: 085e507986f9d2d46ad55a015973d5ec, type: 3}
+      _canFly: 0
+      _count: 3
+    - _enemyPrefab: {fileID: 3760816855847393655, guid: 8081889401bec934cb5cc57f7069f701, type: 3}
+      _canFly: 1
+      _count: 3
+    - _enemyPrefab: {fileID: 8011895756465326400, guid: 73698d923e71a7644ba8ba5440daa4bb, type: 3}
+      _canFly: 0
+      _count: 3
+    - _enemyPrefab: {fileID: 8011895756465326400, guid: 085e507986f9d2d46ad55a015973d5ec, type: 3}
+      _canFly: 0
+      _count: 1
+    - _enemyPrefab: {fileID: 8011895756465326400, guid: 085e507986f9d2d46ad55a015973d5ec, type: 3}
+      _canFly: 0
+      _count: 5
+    - _enemyPrefab: {fileID: 3760816855847393655, guid: 8081889401bec934cb5cc57f7069f701, type: 3}
+      _canFly: 1
+      _count: 3
+  - _finishEachEnemyFirst: 0
+    _spawnDelay: 1
+    _waves:
+    - _enemyPrefab: {fileID: 8011895756465326400, guid: 0d2698f753272ec47a64f0b2fdef502b, type: 3}
+      _canFly: 0
+      _count: 1

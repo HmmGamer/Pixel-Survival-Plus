@@ -33,7 +33,7 @@ public class HomeController : MonoBehaviour
         _UpdateHpText();
         if (_currentHp <= 0)
         {
-            //GameManager.Instance._GameOver();
+            GameManager.Instance._GameOver();
             gameObject.SetActive(false);
         }
     }
