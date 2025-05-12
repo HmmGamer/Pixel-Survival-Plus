@@ -20,7 +20,7 @@ MonoBehaviour:
   _shopInfo:
     _buyPrice: 80
     _sellPrice: 25
-  _type: 0
+  _type: 2
   _towerInfo:
     _towerPrefab: {fileID: 0}
     _hp: 0

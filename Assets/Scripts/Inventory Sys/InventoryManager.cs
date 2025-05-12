@@ -13,6 +13,7 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] _uiAttachments _uiAttach;
 
     [Header("Public Data")]
+    [SerializeField] IdSearchDatabase _idSearchDatabase;
     public Sprite _defaultSlotSprite;
     public Color _defaultSlotColor = Color.white;
     [HideInInspector] public GameObject _dragGameObject;
@@ -28,6 +29,7 @@ public class InventoryManager : MonoBehaviour
             Destroy(gameObject);
 
         _InstantiateDragObject();
+        _msgBox = GetComponent<MessageBoxController>();
     }
     private void _InstantiateDragObject()
     {
@@ -69,7 +71,10 @@ public class InventoryManager : MonoBehaviour
         _uiAttach._infoPanel.SetActive(iActivation);
     }
     #endregion
-
+    public ItemData _GetItemDataByID(string iId)
+    {
+        return _idSearchDatabase._GetItemDataByID(iId);
+    }
     public bool _AddNewItem(ItemData iNewData)
     {
         InventorySlot firstEmpty = null;
@@ -88,11 +93,12 @@ public class InventoryManager : MonoBehaviour
                 if (_invSlots[i]._data._quantity < _invSlots[i]._data._itemData._invInfo._maxStack)
                 {
                     _invSlots[i]._data._quantity++;
+                    _invSlots[i]._UpdateUi();
                     return true;
                 }
             }
         }
-        // if we are here it means we can't stack anywhere
+        // if we are here it means we can't stack anywhere so we will add it to another slot
         if (firstEmpty != null)
         {
             firstEmpty._ChangeData(new _InvData(iNewData));

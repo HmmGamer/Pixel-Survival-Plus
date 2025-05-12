@@ -11,9 +11,6 @@ public class InventorySlot : MonoBehaviour
     public event UnityAction<_InvData> _onChangeSelection;
     public event UnityAction<_InvData> _onSlotChange;
 
-    //[Header("General Settings")]
-    //[SerializeField] bool _isSelectable = true;
-
     [Header("Attachments")]
     [SerializeField] Image _iconImage;
     [SerializeField] Text _quantityText;
@@ -22,8 +19,14 @@ public class InventorySlot : MonoBehaviour
     [HideInInspector] public _InvData _data = null;
     bool _isSelected;
     Image _selectionBorder;
-    
+
+    string _uniqueId;
+
     #region starter
+    private void Awake()
+    {
+        _LoadData(); // dont transfer this to OnEnable!
+    }
     private void Start()
     {
         _InitButtons();
@@ -70,16 +73,64 @@ public class InventorySlot : MonoBehaviour
             _quantityText.text = _data._quantity.ToString();
     }
     #endregion
+    #region Save - Load
+    public void _SaveData()
+    {
+        //if (_data != null)
+        //{
+        //    string _itemID = _data._itemData._invInfo._name;
+        //    int _quantity = _data._quantity;
+        //    PlayerPrefs.SetString(_slotType.ToString() + _uniqueId + "_ItemID", _itemID);
+        //    PlayerPrefs.SetInt(_slotType.ToString() + _uniqueId + "_Quantity", _quantity);
+        //    Debug.Log("Saved " + _data._itemData._invInfo._name);
+        //}
+        //else
+        //{
+        //    PlayerPrefs.DeleteKey(_slotType.ToString() + _uniqueId + "_ItemID");
+        //    PlayerPrefs.DeleteKey(_slotType.ToString() + _uniqueId + "_Quantity");
+        //}
+    }
+    public void _LoadData()
+    {
+        //_GetUniqueId();
 
-    public bool _ChangeData(_InvData iData)
+        //string _keyItemID = _slotType.ToString() + _uniqueId + "_ItemID";
+        //string _keyQuantity = _slotType.ToString() + _uniqueId + "_Quantity";
+        //if (PlayerPrefs.HasKey(_keyItemID))
+        //{
+        //    string _itemID = PlayerPrefs.GetString(_keyItemID);
+        //    int _quantity = PlayerPrefs.GetInt(_keyQuantity);
+        //    ItemData _itemData = InventoryManager.Instance._GetItemDataByID(_itemID);
+        //    if (_itemData != null)
+        //    {
+        //        _InvData _loadedData = new _InvData(_itemData, _quantity);
+        //        _ChangeData(_loadedData, true);
+        //        Debug.Log(_loadedData + " was added to inventory");
+        //    }
+        //}
+    }
+    public void _GetUniqueId()
+    {
+        _uniqueId = UniqueIdTools._MakeUniqueId(transform.position, transform.parent);
+    }
+    #endregion
+    #region functional
+    public bool _ChangeData(_InvData iData, bool iIsForLoad = false)
     {
         if (iData != null && _slotType != _AllWearableTypes.none)
             if (!_CanSlotStoreItem(iData._itemData)) return false;
 
         _data = iData;
         _UpdateUi();
+
+        if (iIsForLoad) // only called for loading data from disk
+        {
+            return true;
+        }
+
         _onSlotChange?.Invoke(iData);
         _onNewSelection?.Invoke();
+        _SaveData();
         return true;
     }
     public void _RemoveItem(int iCount = 1)
@@ -92,9 +143,13 @@ public class InventorySlot : MonoBehaviour
             _B_ChangeSelection();
             _ChangeData(null);
         }
-            
+
         else // we decreased it first and now we update the Ui 
+        {
             _UpdateUi();
+            _SaveData();
+        }
+
     }
     public bool _CanSlotStoreItem(ItemData iNewData)
     {
@@ -128,6 +183,7 @@ public class InventorySlot : MonoBehaviour
         _isSelected = false;
         _selectionBorder.color = InventoryManager.Instance._defaultSlotColor;
     }
+    #endregion
 }
 public class _InvData
 {

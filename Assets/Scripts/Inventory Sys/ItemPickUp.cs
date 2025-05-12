@@ -26,6 +26,7 @@ public class ItemPickUp : MonoBehaviour
     private void _DisablePhysics()
     {
         _rb.isKinematic = true;
+        _rb.velocity = Vector3.zero;
     }
     private void _ResetOnPool()
     {

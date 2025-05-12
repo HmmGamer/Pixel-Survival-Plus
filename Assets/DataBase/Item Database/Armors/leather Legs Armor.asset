@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: leather Legs Armor
   m_EditorClassIdentifier: 
   _invInfo:
-    _name: leather Hat
+    _name: leather Legs
     _description: a Legs Armor made of leather
     _inventorySprite: {fileID: 21300000, guid: 3fc03c83e49d74a42bbabcdfaac9a080, type: 3}
     _maxStack: 1
