@@ -132,7 +132,7 @@ public class EnemyController : MonoBehaviour
     public void _TakeDamage(int iDamage)
     {
 
-        iDamage = AAA.HpTools._CalculateDamage(iDamage, _enemyData._stats._armor);
+        iDamage = GeneralTools.HpTools._CalculateDamage(iDamage, _enemyData._stats._armor);
         _currentHp -= iDamage;
         if (_currentHp <= 0)
         {

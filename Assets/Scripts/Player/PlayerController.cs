@@ -98,7 +98,7 @@ public class PlayerController : MonoBehaviour
     {
         //if (_hasShield) return;
 
-        iDamage = AAA.HpTools._CalculateDamage(iDamage, _totalArmor);
+        iDamage = GeneralTools.HpTools._CalculateDamage(iDamage, _totalArmor);
         _remainingHp -= iDamage;
 
         _UpdateUi();

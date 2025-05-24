@@ -1,6 +1,8 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public static class AAA
+public class GeneralTools : MonoBehaviour
 {
     public static class HpTools
     {

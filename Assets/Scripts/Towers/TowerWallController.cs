@@ -14,7 +14,7 @@ public class TowerWallController : MonoBehaviour
     }
     public void _TakeDamage(int iDamage)
     {
-        iDamage = AAA.HpTools._CalculateDamage(iDamage, _itemData._towerInfo._armor);
+        iDamage = GeneralTools.HpTools._CalculateDamage(iDamage, _itemData._towerInfo._armor);
         _currentHp -= iDamage;
 
         if (iDamage >= _currentHp)

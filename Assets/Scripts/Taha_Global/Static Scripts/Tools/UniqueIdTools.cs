@@ -19,7 +19,7 @@ public static class UniqueIdTools
 
         return xPart + yPart + pPart + "_" + currentScene;
     }
-    public static string _MakeUniqueId(Vector2 iPosition, Transform iParent)
+    public static string _MakeUniqueId(Vector2 iPosition , Transform iParent)
     {
         string xPart = iPosition.x.ToString("F2").Replace(".", "");
         string yPart = iPosition.y.ToString("F2").Replace(".", "");
@@ -30,7 +30,7 @@ public static class UniqueIdTools
         if (yPart.Length > 6)
             yPart = yPart.Substring(0, 5);
         if (pPart.Length > 6)
-            pPart = pPart.Substring(0, 2) + pPart.Substring(pPart.Length - 3, 3);
+            pPart = pPart.Substring(0, 2) + pPart.Substring(pPart.Length - 2, pPart.Length);
 
         // we add currentScene to ensure the id is unique in different scenes
         int currentScene;

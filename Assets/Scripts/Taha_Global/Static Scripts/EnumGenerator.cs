@@ -3,12 +3,23 @@ using System.IO;
 using UnityEditor;
 #endif
 using UnityEngine;
-/// <summary>
-/// this class makes an enum for you based on an string array
-/// it can also be called in the editor as well with the [CreateButton] attribute
-/// 
-/// read comments for more info
-/// </summary>
+class _Comments
+{
+    //[SerializeField] _Test[] tests;
+
+    //[CreateButton("Make Enum")]
+    //private void _MakeEnum()
+    //{
+    //    EnumGenerator.GenerateEnums("testEnum", tests, nameof(_Test._name));
+    //}
+    //[Serializable]
+    //public class _Test
+    //{
+    //    public string _name;
+    //    public int _value;
+    //}
+}
+
 public static class EnumGenerator
 {
     private const string GENERATION_PATH = "Assets/Others/GeneratedEnums";
@@ -60,20 +71,5 @@ public static class EnumGenerator
         AssetDatabase.Refresh();
 #endif
     }
-    private class _Comments
-    {
-        //[SerializeField] _Test[] tests;
 
-        //[CreateButton("Make Enum")]
-        //private void _MakeEnum()
-        //{
-        //    EnumGenerator.GenerateEnums("testEnum", tests, nameof(_Test._name));
-        //}
-        //[Serializable]
-        //public class _Test
-        //{
-        //    public string _name;
-        //    public int _value;
-        //}
-    }
 }

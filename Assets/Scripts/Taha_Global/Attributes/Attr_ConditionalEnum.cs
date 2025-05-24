@@ -13,7 +13,7 @@ public class ConditionalEnumAttribute : PropertyAttribute
         _targetEnumValues = new HashSet<int>(targetEnumValues);
     }
 }
-
+#if UNITY_EDITOR
 [CustomPropertyDrawer(typeof(ConditionalEnumAttribute), true)]
 public class ConditionalEnumDrawer : PropertyDrawer
 {
@@ -52,9 +52,11 @@ public class ConditionalEnumDrawer : PropertyDrawer
 
         return EditorGUI.GetPropertyHeight(property, true);
     }
+
     private SerializedProperty GetEnumProperty(SerializedProperty property, string enumField)
     {
         string path = property.propertyPath.Replace(property.name, enumField);
         return property.serializedObject.FindProperty(path);
     }
 }
+#endif
