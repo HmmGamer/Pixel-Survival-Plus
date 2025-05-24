@@ -53,6 +53,6 @@ public class EquipmentSlot : MonoBehaviour
 public class __FutureUpdates
 {
     /* remember to change the logic for calculating stats by removing the loop and only
-     * changing the data that was changed for more performance
+     * changing the data that was changed for better performance
      */
 }

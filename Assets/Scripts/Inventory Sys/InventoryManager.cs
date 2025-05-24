@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(MessageBoxController))]
-public class InventoryManager : MonoBehaviour
+public class InventoryManager : Singleton_Abs<InventoryManager>
 {
     public static InventoryManager Instance;
 
@@ -21,7 +21,7 @@ public class InventoryManager : MonoBehaviour
 
     MessageBoxController _msgBox;
 
-    private void Awake()
+    public override void Awake()
     {
         if (Instance == null)
             Instance = this;
@@ -30,6 +30,15 @@ public class InventoryManager : MonoBehaviour
 
         _InstantiateDragObject();
         _msgBox = GetComponent<MessageBoxController>();
+        _LoadInventoryItems();
+    }
+    private void _LoadInventoryItems()
+    {
+        // the inventory slots are disabled at the start so we load the data Manually
+        for (int i = 0; i < _invSlots.Length; i++)
+        {
+            _invSlots[i]._LoadData();
+        }
     }
     private void _InstantiateDragObject()
     {

@@ -31,7 +31,7 @@ MonoBehaviour:
     _towerType: 0
     _bulletPrefab: {fileID: 0}
   _defenseInfo:
-    _wearableType: 2
+    _wearableType: 0
     _equipmentSprite: {fileID: 0}
     _extraHp: 15
     _extraArmor: 10

@@ -80,22 +80,26 @@ public class InventorySlot : MonoBehaviour
         {
             string _itemID = _data._itemData._invInfo._name;
             int _quantity = _data._quantity;
-            PlayerPrefs.SetString(_slotType.ToString() + _uniqueId + "_ItemID", _itemID);
-            PlayerPrefs.SetInt(_slotType.ToString() + _uniqueId + "_Quantity", _quantity);
+            PlayerPrefs.SetString(_uniqueId + "_ItemID", _itemID);
+            PlayerPrefs.SetInt(_uniqueId + "_Quantity", _quantity);
             Debug.Log("Saved " + _data._itemData._invInfo._name);
         }
         else
         {
-            PlayerPrefs.DeleteKey(_slotType.ToString() + _uniqueId + "_ItemID");
-            PlayerPrefs.DeleteKey(_slotType.ToString() + _uniqueId + "_Quantity");
+            PlayerPrefs.DeleteKey(_uniqueId + "_ItemID");
+            PlayerPrefs.DeleteKey(_uniqueId + "_Quantity");
         }
     }
-    public void _LoadData()
-    {
-        _GetUniqueId();
 
-        string _keyItemID = _slotType.ToString() + _uniqueId + "_ItemID";
-        string _keyQuantity = _slotType.ToString() + _uniqueId + "_Quantity";
+    /// <summary>
+    /// read _GetUniqueId Summery for more info
+    /// </summary>
+    public void _LoadData(bool iIsForInventory = false)
+    {
+        _GetUniqueId(iIsForInventory);
+
+        string _keyItemID = _uniqueId + "_ItemID";
+        string _keyQuantity = _uniqueId + "_Quantity";
         if (PlayerPrefs.HasKey(_keyItemID))
         {
             string _itemID = PlayerPrefs.GetString(_keyItemID);
@@ -112,13 +116,31 @@ public class InventorySlot : MonoBehaviour
 
     /// <summary>
     /// we use the _UniqueId to insure the save Key is unique in the game
+    /// 
+    /// as the inventory slots need to be loaded before the game Starts ( logical reasons ) and 
+    /// the UniqueId Generator needs active GameObjects for generating Id in start , we do this 
+    /// to avoid Cpu overheat for slots other than the Inventory as they dont need to be loaded 
+    /// at the start!
     /// </summary>
-    public void _GetUniqueId()
+    public void _GetUniqueId(bool iIsForInventory = false)
     {
-        _uniqueId = UniqueIdTools._MakeUniqueId(transform);
+        if (_uniqueId != null) return;
+
+        if (iIsForInventory)
+            _uniqueId = UniqueIdTools._MakeUniqueId(transform, true);
+        else
+            _uniqueId = UniqueIdTools._MakeUniqueId(transform);
     }
     #endregion
     #region functional
+    /// <summary>
+    /// this is the main method of this class and used in almost everything
+    /// 
+    /// it is mainly recommended to avoid changing data manually unless necessary
+    /// </summary>
+    /// <param name="iData"></param>
+    /// <param name="iIsForLoad"> this bool is only true for disk loading and called from _LoadData</param>
+    /// <returns></returns>
     public bool _ChangeData(_InvData iData, bool iIsForLoad = false)
     {
         if (iData != null && _slotType != _AllWearableTypes.none)
@@ -137,6 +159,9 @@ public class InventorySlot : MonoBehaviour
         _SaveData();
         return true;
     }
+    /// <summary>
+    /// this method does the job of reducing stacks as well as deleting them
+    /// </summary>
     public void _RemoveItem(int iCount = 1)
     {
         _data._quantity -= iCount;
@@ -155,7 +180,7 @@ public class InventorySlot : MonoBehaviour
         }
 
     }
-    public bool _CanSlotStoreItem(ItemData iNewData)
+    private bool _CanSlotStoreItem(ItemData iNewData)
     {
         if (iNewData._defenseInfo._wearableType == _slotType)
             return true;
@@ -200,4 +225,10 @@ public class _InvData
         _quantity = iQuantity;
     }
     public _InvData() { }
+}
+public class __FutureUpdates3
+{
+    /* remember to change the logic of selection so only the last selected item will change
+     * the selection and remove the event Listeners for the other slots
+     */
 }

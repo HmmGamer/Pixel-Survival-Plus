@@ -17,7 +17,7 @@ public abstract class Singleton_Abs<T> : MonoBehaviour where T : MonoBehaviour
 {
     public static T _instance;
 
-    protected virtual void Awake()
+    public virtual void Awake()
     {
         if (_instance != null && _instance != this)
         {
