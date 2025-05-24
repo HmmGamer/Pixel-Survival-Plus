@@ -102,9 +102,9 @@ public class EnemySpawner : MonoBehaviour
     private void SpawnEnemy(GameObject enemyPrefab, bool iCanFly)
     {
         if (iCanFly) 
-            PoolManager._GetInstance(_PoolType.enemy)._Instantiate(enemyPrefab, _airSpawnPos.position, Quaternion.identity);
+            PoolManager._instance._Instantiate(_PoolType.enemy, enemyPrefab, _airSpawnPos.position, Quaternion.identity);
         else
-            PoolManager._GetInstance(_PoolType.enemy)._Instantiate(enemyPrefab, _groundSpawnPos.position, Quaternion.identity);
+            PoolManager._instance._Instantiate(_PoolType.enemy, enemyPrefab, _groundSpawnPos.position, Quaternion.identity);
     }
     private bool HasRemainingEnemies(WaveDataBase._AllWavesStruct wave)
     {

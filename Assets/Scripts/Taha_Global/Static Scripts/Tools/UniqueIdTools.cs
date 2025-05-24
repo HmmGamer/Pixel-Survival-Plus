@@ -2,42 +2,38 @@ using UnityEngine;
 
 public static class UniqueIdTools
 {
-    public static string _MakeUniqueId(Vector2 iPosition)
+    /// <summary>
+    /// reminder : if you have the same script in one gameObject you will have a duplicated Id
+    /// 
+    /// to avoid this change one of these : position ,name ,parent name
+    /// </summary>
+    public static string _MakeUniqueId(Transform iObject)
     {
-        string xPart = iPosition.x.ToString("F2").Replace(".", "");
-        string yPart = iPosition.y.ToString("F2").Replace(".", "");
-        string pPart = " ";
+        string xPart = iObject.position.x.ToString("F2").Replace(".", "");
+        string yPart = iObject.position.y.ToString("F2").Replace(".", "");
+        string zPart = iObject.position.z.ToString("F2").Replace(".", "");
+        string nPart = iObject.name;
 
-        if (xPart.Length > 6)
-            xPart = xPart.Substring(0, 5);
-        if (yPart.Length > 6)
-            yPart = yPart.Substring(0, 5);
+        string pPart = iObject.parent != null ? iObject.parent.name : "Null";
 
-        // we add currentScene to ensure the id is unique in different scenes
-        int currentScene;
-        currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex;
+        if (xPart.Length > 5)
+            xPart = xPart.Substring(0, 4);
+        if (yPart.Length > 5)
+            yPart = yPart.Substring(0, 4);
+        if (zPart.Length > 5)
+            zPart = zPart.Substring(0, 4);
 
-        return xPart + yPart + pPart + "_" + currentScene;
-    }
-    public static string _MakeUniqueId(Vector2 iPosition , Transform iParent)
-    {
-        string xPart = iPosition.x.ToString("F2").Replace(".", "");
-        string yPart = iPosition.y.ToString("F2").Replace(".", "");
-        string pPart = iParent.name.Replace(".", "");
+        if (nPart.Length > 6)
+            nPart = nPart.Substring(0, 2) + nPart.Substring(nPart.Length - 2, 2);
 
-        if (xPart.Length > 6)
-            xPart = xPart.Substring(0, 5);
-        if (yPart.Length > 6)
-            yPart = yPart.Substring(0, 5);
         if (pPart.Length > 6)
-            pPart = pPart.Substring(0, 2) + pPart.Substring(pPart.Length - 2, pPart.Length);
+            pPart = pPart.Substring(0, 2) + pPart.Substring(pPart.Length - 2, 2);
 
-        // we add currentScene to ensure the id is unique in different scenes
-        int currentScene;
-        currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex;
+        int currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex;
 
-        return xPart + yPart + pPart + "_" + currentScene;
+        return xPart + yPart + zPart + nPart + pPart + "_" + currentScene;
     }
+
     public static int _GetUniqueIdScene(string iUniqueId)
     {
         return int.Parse(iUniqueId.Split('_')[1]);

@@ -46,6 +46,6 @@ public class BulletController : MonoBehaviour
     }
     private void _DespawnBullet()
     {
-        PoolManager._GetInstance(_PoolType.bullet)._Despawn(gameObject);
+        PoolManager._instance._Despawn(gameObject);
     }
 }

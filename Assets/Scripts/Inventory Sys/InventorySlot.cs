@@ -76,42 +76,46 @@ public class InventorySlot : MonoBehaviour
     #region Save - Load
     public void _SaveData()
     {
-        //if (_data != null)
-        //{
-        //    string _itemID = _data._itemData._invInfo._name;
-        //    int _quantity = _data._quantity;
-        //    PlayerPrefs.SetString(_slotType.ToString() + _uniqueId + "_ItemID", _itemID);
-        //    PlayerPrefs.SetInt(_slotType.ToString() + _uniqueId + "_Quantity", _quantity);
-        //    Debug.Log("Saved " + _data._itemData._invInfo._name);
-        //}
-        //else
-        //{
-        //    PlayerPrefs.DeleteKey(_slotType.ToString() + _uniqueId + "_ItemID");
-        //    PlayerPrefs.DeleteKey(_slotType.ToString() + _uniqueId + "_Quantity");
-        //}
+        if (_data != null)
+        {
+            string _itemID = _data._itemData._invInfo._name;
+            int _quantity = _data._quantity;
+            PlayerPrefs.SetString(_slotType.ToString() + _uniqueId + "_ItemID", _itemID);
+            PlayerPrefs.SetInt(_slotType.ToString() + _uniqueId + "_Quantity", _quantity);
+            Debug.Log("Saved " + _data._itemData._invInfo._name);
+        }
+        else
+        {
+            PlayerPrefs.DeleteKey(_slotType.ToString() + _uniqueId + "_ItemID");
+            PlayerPrefs.DeleteKey(_slotType.ToString() + _uniqueId + "_Quantity");
+        }
     }
     public void _LoadData()
     {
-        //_GetUniqueId();
+        _GetUniqueId();
 
-        //string _keyItemID = _slotType.ToString() + _uniqueId + "_ItemID";
-        //string _keyQuantity = _slotType.ToString() + _uniqueId + "_Quantity";
-        //if (PlayerPrefs.HasKey(_keyItemID))
-        //{
-        //    string _itemID = PlayerPrefs.GetString(_keyItemID);
-        //    int _quantity = PlayerPrefs.GetInt(_keyQuantity);
-        //    ItemData _itemData = InventoryManager.Instance._GetItemDataByID(_itemID);
-        //    if (_itemData != null)
-        //    {
-        //        _InvData _loadedData = new _InvData(_itemData, _quantity);
-        //        _ChangeData(_loadedData, true);
-        //        Debug.Log(_loadedData + " was added to inventory");
-        //    }
-        //}
+        string _keyItemID = _slotType.ToString() + _uniqueId + "_ItemID";
+        string _keyQuantity = _slotType.ToString() + _uniqueId + "_Quantity";
+        if (PlayerPrefs.HasKey(_keyItemID))
+        {
+            string _itemID = PlayerPrefs.GetString(_keyItemID);
+            int _quantity = PlayerPrefs.GetInt(_keyQuantity);
+            ItemData _itemData = InventoryManager.Instance._GetItemDataByID(_itemID);
+            if (_itemData != null)
+            {
+                _InvData _loadedData = new _InvData(_itemData, _quantity);
+                _ChangeData(_loadedData, true);
+                Debug.Log(_loadedData + " was added to inventory");
+            }
+        }
     }
+
+    /// <summary>
+    /// we use the _UniqueId to insure the save Key is unique in the game
+    /// </summary>
     public void _GetUniqueId()
     {
-        _uniqueId = UniqueIdTools._MakeUniqueId(transform.position, transform.parent);
+        _uniqueId = UniqueIdTools._MakeUniqueId(transform);
     }
     #endregion
     #region functional

@@ -15,6 +15,6 @@ public class BuildController : MonoBehaviour
     }
     public void _BuildObject(GameObject iPrefab)
     {
-        PoolManager._GetInstance(_PoolType.tower)._Instantiate(iPrefab, transform.position, Quaternion.identity);
+        PoolManager._instance._Instantiate(_PoolType.tower, iPrefab, transform.position, Quaternion.identity);
     }
 }

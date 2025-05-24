@@ -1,79 +1,79 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PoolManager : MonoBehaviour
+public class PoolManager : Singleton_Abs<PoolManager>
 {
-    private static Dictionary<_PoolType, PoolManager> _instances = new Dictionary<_PoolType, PoolManager>();
-
-    private Dictionary<GameObject, Stack<GameObject>> _pools = new Dictionary<GameObject, Stack<GameObject>>();
+    Dictionary<_PoolType, Dictionary<GameObject, List<GameObject>>> _typePools = new Dictionary<_PoolType, Dictionary<GameObject, List<GameObject>>>();
     [SerializeField] private int _preloadAmount = 5;
-    [SerializeField] private _PoolType _poolType;
 
-    private void Awake()
+    public GameObject _Instantiate(_PoolType _type, GameObject _iGameObject)
     {
-        if (!_instances.ContainsKey(_poolType))
-        {
-            _instances[_poolType] = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-            //Debug.LogError("You have more than one pool with the same type: " + _poolType);
-        }
+        return _Instantiate(_type, _iGameObject, Vector3.zero, Quaternion.identity);
     }
-    public static PoolManager _GetInstance(_PoolType _poolType)
+    public GameObject _Instantiate(_PoolType _type, GameObject _iGameObject, Vector3 _position, Quaternion _rotation,Transform iParent = null)
     {
-        return _instances.TryGetValue(_poolType, out PoolManager _instance) ? _instance : null;
-    }
-    public GameObject _Instantiate(GameObject _iGameObject)
-    {
-        return _Instantiate(_iGameObject, Vector3.zero, Quaternion.identity);
-    }
-    public GameObject _Instantiate(GameObject _iGameObject, Vector3 _position, Quaternion _rotation)
-    {
-        if (!_pools.TryGetValue(_iGameObject, out Stack<GameObject> _stack))
+        if (!_typePools.TryGetValue(_type, out Dictionary<GameObject, List<GameObject>> _prefabMap))
         {
-            _stack = new Stack<GameObject>();
-            _pools[_iGameObject] = _stack;
-            _Preload(_iGameObject, _stack);
+            _prefabMap = new Dictionary<GameObject, List<GameObject>>();
+            _typePools[_type] = _prefabMap;
         }
-        if (_stack.Count > 0)
+
+        if (!_prefabMap.TryGetValue(_iGameObject, out List<GameObject> _list))
         {
-            GameObject _pooledObject = _stack.Pop();
+            _list = new List<GameObject>();
+            _prefabMap[_iGameObject] = _list;
+            _Preload(_iGameObject, _list);
+        }
+
+        if (_list.Count > 0)
+        {
+            int _lastIndex = _list.Count - 1;
+            GameObject _pooledObject = _list[_lastIndex];
+            _list.RemoveAt(_lastIndex);
             _pooledObject.transform.SetPositionAndRotation(_position, _rotation);
             _pooledObject.SetActive(true);
+            _pooledObject.transform.parent = iParent;
             return _pooledObject;
         }
-        GameObject _newObject = Instantiate(_iGameObject, _position, _rotation);
+
+        GameObject _newObject = Instantiate(_iGameObject, _position, _rotation, iParent);
         _newObject.AddComponent<_PooledObject>()._prefab = _iGameObject;
+        _newObject.GetComponent<_PooledObject>()._type = _type;
         return _newObject;
     }
     public void _Despawn(GameObject _iGameObject)
     {
         _iGameObject.SetActive(false);
         _PooledObject _pooledComponent = _iGameObject.GetComponent<_PooledObject>();
-        if (_pooledComponent != null && _pools.TryGetValue(_pooledComponent._prefab, out Stack<GameObject> _stack))
+        if (_pooledComponent != null &&
+            _typePools.TryGetValue(_pooledComponent._type, out Dictionary<GameObject, List<GameObject>> _prefabMap) &&
+            _prefabMap.TryGetValue(_pooledComponent._prefab, out List<GameObject> _list))
         {
-            _stack.Push(_iGameObject);
+            _list.Add(_iGameObject);
         }
     }
-    private void _Preload(GameObject _iGameObject, Stack<GameObject> _stack)
+    private void _Preload(GameObject _iGameObject, List<GameObject> _list)
     {
         for (int i = 0; i < _preloadAmount; i++)
         {
             GameObject _newObject = Instantiate(_iGameObject);
             _newObject.SetActive(false);
             _newObject.AddComponent<_PooledObject>()._prefab = _iGameObject;
-            _stack.Push(_newObject);
+            _list.Add(_newObject);
         }
     }
 }
+
 public class _PooledObject : MonoBehaviour
 {
     public GameObject _prefab;
+    public _PoolType _type;
 }
+
 public enum _PoolType
 {
-    enemy, tower, item, bullet
+    enemy,
+    bullet,
+    item,
+    tower
 }
